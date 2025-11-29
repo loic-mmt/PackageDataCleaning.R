@@ -1,6 +1,14 @@
-#' Import CSV as data.frame
-#' @param file_path chemin vers le CSV
-#' @return data.frame
+#' Charger un fichier CSV brut
+#'
+#' @description
+#' Lit un fichier CSV depuis le disque et le charge dans un `data.frame`.
+#' Cette fonction impose des séparateurs "point-virgule" et ne convertit pas les chaînes en facteurs.
+#'
+#' @param file_path Une chaîne de caractères indiquant le chemin vers le fichier CSV.
+#'
+#' @return Un `data.frame` contenant les données brutes.
+#'
+#' @family Fonctions Validation
 #' @export
 read_raw_csv <- function(file_path) {
   data <- read.csv(file_path, sep = ";", stringsAsFactors = FALSE)
@@ -8,12 +16,29 @@ read_raw_csv <- function(file_path) {
 }
 
 
-#' Test the presence of required colums in a dataframe
+#' Valider la présence des colonnes requises
 #'
-#' @param dataframe Dataframe to test
-#' @param required_colums vector with the required colums names to test in dataframe
-#' @param boollean_form Instruction if we want the outpout on a boolean form
-#' @return presence Indication to the user on the preence of the colums
+#' @description
+#' Vérifie si un `data.frame` contient bien toutes les colonnes nécessaires à la suite du traitement.
+#'
+#' @details
+#' Cette fonction permet deux modes de retour via l'argument `boolean_form` :
+#' \itemize{
+#'   \item **Mode booléen** : Renvoie `TRUE` ou `FALSE`. Utile pour les conditions `if`.
+#'   \item **Mode verbeux** (par défaut) : Renvoie un message textuel indiquant explicitement quelles colonnes sont manquantes.
+#' }
+#'
+#' @param dataframe Le `data.frame` à tester.
+#' @param required_columns Un vecteur contenant les noms des colonnes attendues.
+#' @param boollean_form Logique (`TRUE`/`FALSE`). Si `TRUE`, renvoie un booléen simple. Si `FALSE`, renvoie un message détaillé.
+#'
+#' @return
+#' \itemize{
+#'   \item Si `boollean_form = TRUE` : Un booléen.
+#'   \item Si `boollean_form = FALSE` : Une chaîne de caractères (message de succès ou d'erreur).
+#' }
+#'
+#' @family Fonctions Validation
 #' @export
 validate_schema <- function(dataframe, required_columns, boolean_form = FALSE) {
   not_commun <- required_columns[!required_columns %in% names(dataframe)]
@@ -32,9 +57,25 @@ validate_schema <- function(dataframe, required_columns, boolean_form = FALSE) {
   return(presence)
 }
 
-#' Convert strings to snake_case
-#' @param data character Vector of strings to convert.
-#' @return character Vector in snake_case.
+#' Standardiser les noms de colonnes (snake_case)
+#'
+#' @description
+#' Convertit un vecteur de chaînes de caractères (noms de colonnes) en format standard `snake_case`.
+#'
+#' @details
+#' La normalisation applique les règles suivantes :
+#' \enumerate{
+#'   \item Remplacement de tout caractère non-alphanumérique par `_`.
+#'   \item Gestion du CamelCase (insertion d'un `_` entre minuscule et majuscule).
+#'   \item Passage en minuscules.
+#'   \item Suppression des `_` multiples et nettoyage des extrémités.
+#' }
+#'
+#' @param data Un vecteur de chaînes de caractères (ex: `names(df)`).
+#'
+#' @return Un vecteur de chaînes de caractères nettoyé.
+#'
+#' @family Fonctions validation
 #' @export
 standardize_colnames <- function(data) {
   data <- gsub("[^A-Za-z0-9]+", "_", data)
@@ -47,10 +88,28 @@ standardize_colnames <- function(data) {
 
 #' Enforce simple column types
 #'
-#' @param data data.frame Input data
-#' @param num_threshold numeric Proportion threshold for numeric conversion (default 0.9)
-#' @param max_factor_levels integer Max distinct levels to convert to factor (default 20)
-#' @return data.frame Data with basic types enforced
+#' @description
+#' Analyse chaque colonne d'un `data.frame` et tente de convertir les types `character`
+#' en types plus appropriés (`numeric`, `integer` ou `factor`).
+#'
+#' @details
+#' L'algorithme procède colonne par colonne :
+#' \itemize{
+#'   \item Ignore les colonnes déjà numériques ou dates.
+#'   \item Nettoie les espaces (`trimws`).
+#'   \item **Conversion Numérique** : Si le ratio de valeurs convertibles dépasse `num_threshold`, la colonne devient numérique (ou entier si possible).
+#'   \item **Conversion Facteur** : Sinon, si le nombre de valeurs uniques est inférieur à `max_factor_levels`, la colonne devient un facteur.
+#'   \item Sinon, la colonne reste en texte.
+#' }
+#'
+#' @param data Le `data.frame` en entrée.
+#' @param num_threshold Proportion (0 à 1). Seuil de valeurs valides nécessaires pour convertir en numérique (défaut 0.9).
+#' @param max_factor_levels Entier. Nombre maximum de modalités pour convertir en facteur (défaut 20).
+#'
+#' @return Un nouveau `data.frame` avec les types optimisés.
+#'
+#' @family Fonctions Validation
+#' @seealso \code{\link{standardize_colnames}}
 #' @export
 enforce_types <- function(data, num_threshold = 0.9, max_factor_levels = 20) {
   out <- data
@@ -108,10 +167,25 @@ enforce_types <- function(data, num_threshold = 0.9, max_factor_levels = 20) {
 
 #' Deduplicate data
 #'
-#' @param data data to deduplicate.
-#' @param keys character|null Columns used as unique key; default NULL = all columns.
-#' @param keep character Keep "first" or "last" occurrence when duplicates exist.
-#' @return deduplicated data.
+#' @description
+#' Supprime les doublons dans un `data.frame` en se basant sur une clé composée de colonnes spécifiques.
+#'
+#' @param data Le `data.frame` à dédupliquer.
+#' @param keys Vecteur de noms de colonnes ou `NULL`.
+#'   \itemize{
+#'     \item Si `NULL` (défaut) : Toutes les colonnes sont utilisées pour identifier les doublons.
+#'     \item Si Vecteur : Seules ces colonnes définissent l'unicité (ex: `c("ID", "Date")`).
+#'   }
+#' @param keep Chaîne de caractères indiquant quelle ligne garder en cas de doublon :
+#'   \itemize{
+#'     \item `"first"` : Garde la première occurrence trouvée.
+#'     \item `"last"` : Garde la dernière occurrence trouvée.
+#'   }
+#'
+#' @return Le `data.frame` sans doublons.
+#'   L'objet retourné possède un attribut `"n_removed"` indiquant le nombre de lignes supprimées.
+#'
+#' @family Fonctions Validation
 #' @export
 deduplicate_rows <- function(data, keys = NULL, keep = c("first", "last")) {
   keep <- match.arg(keep)
