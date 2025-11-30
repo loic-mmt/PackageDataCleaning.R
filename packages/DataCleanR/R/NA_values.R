@@ -1,19 +1,39 @@
 #' Impute missing values for numeric and categorical columns
 #'
-#' Impute `NA` values column-wise with simple, dependency-free strategies.
-#' Numeric: "median", "mean" ou "constant".
-#' Catégorielles (character/factor): "mode", "constant" ou "new_level" (étiquette par défaut: "Missing").
-#' Logiques: imputées à la valeur majoritaire.
+#' @description
+#' Remplace les valeurs manquantes (`NA`) dans un `data.frame` colonne par colonne,
+#' en appliquant des stratégies simples et indépendantes (sans dépendances externes complexes).
 #'
-#' @param data data.frame d'entrée.
-#' @param cols (optionnel) noms de colonnes à imputer. Par défaut: toutes.
-#' @param exclude (optionnel) colonnes à exclure après `cols`.
-#' @param num_method "median", "mean" ou "constant". Défaut: "median".
-#' @param cat_method "mode", "constant" ou "new_level". Défaut: "mode".
-#' @param num_constant valeur numérique utilisée si `num_method="constant"` (ou si toute la colonne est NA). Défaut: 0.
-#' @param cat_constant valeur utilisée si `cat_method` est "constant" ou "new_level" (ou si toute la colonne est NA). Défaut: "Missing".
-#' @param verbose afficher un résumé par colonne. Défaut: TRUE.
-#' @return Le data.frame avec les NA imputés.
+#' @details
+#' Les stratégies appliquées dépendent du type de la colonne :
+#' \itemize{
+#'   \item **Numérique** (`numeric`, `integer`) :
+#'     \itemize{
+#'       \item `"median"` (défaut) : Remplace par la médiane (robuste aux outliers).
+#'       \item `"mean"` : Remplace par la moyenne.
+#'       \item `"constant"` : Remplace par la valeur fournie dans `num_constant` (ex: 0).
+#'     }
+#'   \item **Catégorielle** (`character`, `factor`) :
+#'     \itemize{
+#'       \item `"mode"` (défaut) : Remplace par la valeur la plus fréquente. En cas d'égalité, l'ordre alphabétique tranche.
+#'       \item `"constant"` ou `"new_level"` : Remplace par la valeur `cat_constant` (par défaut "Missing").
+#'       \item *Note* : Si la colonne est un facteur, les niveaux (levels) sont automatiquement mis à jour pour inclure la nouvelle valeur si nécessaire.
+#'     }
+#'   \item **Logique** (`logical`) : Remplace par la valeur majoritaire (`TRUE` ou `FALSE`).
+#' }
+#'
+#' @param data Le `data.frame` contenant des valeurs manquantes.
+#' @param cols Vecteur de noms de colonnes à traiter (optionnel). Si `NULL` (défaut), toutes les colonnes sont traitées.
+#' @param exclude Vecteur de noms de colonnes à exclure du traitement (optionnel).
+#' @param num_method Méthode pour les numériques : `"median"`, `"mean"` ou `"constant"`.
+#' @param cat_method Méthode pour les textes/facteurs : `"mode"`, `"constant"` ou `"new_level"`.
+#' @param num_constant Valeur utilisée si `num_method = "constant"` (défaut `0`).
+#' @param cat_constant Valeur utilisée si `cat_method = "constant"` (défaut `"Missing"`).
+#' @param verbose Logique. Si `TRUE` (défaut), affiche un message dans la console pour chaque colonne imputée.
+#'
+#' @return Le `data.frame` avec les valeurs manquantes imputées.
+#'
+#' @family Gestion des NA
 #' @export
 impute_missing <- function(data,
                            cols = NULL,

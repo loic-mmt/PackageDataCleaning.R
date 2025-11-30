@@ -1,22 +1,39 @@
 #' @title Valider les plages de valeurs
-#' @description Vérifie que les données respectent les contraintes de plage (salary > 0, remote_ratio entre 0 et 100, années plausibles)
-#' @param data Data frame contenant les colonnes à valider
-#' @param min_year Année minimale acceptable (par défaut 2000)
-#' @param max_year Année maximale acceptable (par défaut année courante)
-#' @return Data frame filtré contenant uniquement les lignes valides
+#'
+#' @description
+#' Vérifie que les données respectent les règles métier et **supprime** les lignes invalides.
+#' Les règles incluent : salaire strictement positif, ratio de télétravail entre 0 et 100, et année de travail plausible.
+#'
+#' @details
+#' Cette fonction applique un filtre strict. Une ligne est conservée uniquement si toutes les conditions suivantes sont vraies :
+#' \itemize{
+#'   \item `salary` > 0
+#'   \item `remote_ratio` est compris entre 0 et 100 inclus.
+#'   \item `work_year` est compris entre `min_year` et `max_year`.
+#'   \item Aucune de ces valeurs n'est `NA`.
+#' }
+#' Un message est affiché dans la console si des lignes sont supprimées.
+#'
+#' @param data Le `data.frame` contenant les colonnes `salary`, `remote_ratio` et `work_year`.
+#' @param min_year Entier. Année minimale acceptable (défaut 2000).
+#' @param max_year Entier. Année maximale acceptable (défaut : année courante système).
+#'
+#' @return Un `data.frame` filtré (le nombre de lignes peut être inférieur à l'original).
+#'
+#' @family Qualité des Données
 #' @export
 
 validate_ranges <- function(data, min_year = 2000, max_year = as.integer(format(Sys.Date(), "%Y"))) {
   if (!all(c("salary", "remote_ratio", "work_year") %in% names(data))) {
     stop("Les colonnes 'salary', 'remote_ratio' et 'work_year' doivent exister.")
   }
-  
+
   data$salary <- as.numeric(data$salary)
   data$remote_ratio <- as.numeric(data$remote_ratio)
   data$work_year <- as.integer(data$work_year)
-  
+
   initial_rows <- nrow(data)
-  
+
   # Filtrer les lignes valides
   valid_data <- data[
     data$salary > 0 &
@@ -28,33 +45,47 @@ validate_ranges <- function(data, min_year = 2000, max_year = as.integer(format(
       !is.na(data$remote_ratio) &
       !is.na(data$work_year),
   ]
-  
+
   removed_rows <- initial_rows - nrow(valid_data)
-  
+
   if (removed_rows > 0) {
     message(sprintf("%d ligne(s) supprimée(s) car hors des plages valides.", removed_rows))
   }
-  
+
   return(valid_data)
 }
 
 
 #' Cap salary outliers (quantile)
 #'
-#' Winsorise une colonne numérique en plafonnant par quantiles.
-#' On calcule \code{L = quantile(x, lower)} et \code{U = quantile(x, upper)}
-#' puis on remplace les valeurs en dehors de \code{[L, U]} (selon \code{clip_side}).
-#' Retourne le data.frame filtré.
+#' @description
+#' Traite les valeurs extrêmes (outliers) d'une colonne numérique en les remplaçant par les valeurs des quantiles limites.
+#' C'est une technique de "Winsorisation".
 #'
-#' @param data data.frame.
-#' @param col Nom de la colonne numérique à traiter (défaut: "salary_in_usd").
-#' @param lower Probabilité du quantile bas (défaut 0.01).
-#' @param upper Probabilité du quantile haut (défaut 0.99).
-#' @param clip_side "both" (défaut), "upper" ou "lower".
-#' @param na_rm logique; ignorer les NA pour le calcul des quantiles (défaut TRUE).
-#' @param verbose logique; afficher un résumé des opérations.
+#' @details
+#' La fonction calcule deux bornes :
+#' \itemize{
+#'   \item **L (Lower)** : Le quantile correspondant à la probabilité `lower` (ex: 1\%).
+#'   \item **U (Upper)** : Le quantile correspondant à la probabilité `upper` (ex: 99\%).
+#' }
+#' Selon le paramètre `clip_side`, les valeurs inférieures à L sont remplacées par L, et les valeurs supérieures à U sont remplacées par U.
 #'
-#' @return Le `data.frame` modifié (mêmes dimensions, valeurs extrêmes filtrées).
+#' @param data Le `data.frame` contenant les données.
+#' @param col Chaîne de caractères. Nom de la colonne à traiter (défaut `"salary_in_usd"`).
+#' @param lower Probabilité pour le quantile bas (0 à 1, défaut 0.01 pour 1\%).
+#' @param upper Probabilité pour le quantile haut (0 à 1, défaut 0.99 pour 99\%).
+#' @param clip_side Stratégie de plafonnement :
+#'   \itemize{
+#'     \item `"both"` (défaut) : Plafonne en bas et en haut.
+#'     \item `"upper"` : Plafonne uniquement les valeurs hautes.
+#'     \item `"lower"` : Plafonne uniquement les valeurs basses.
+#'   }
+#' @param na_rm Logique. Ignorer les `NA` lors du calcul des quantiles (défaut `TRUE`).
+#' @param verbose Logique. Affiche un résumé des remplacements effectués.
+#'
+#' @return Le `data.frame` avec la colonne cible modifiée (les valeurs extrêmes sont "écrasées").
+#'
+#' @family Qualité des Données
 #' @export
 cap_outliers_salary <- function(data,
                                 col = "salary_in_usd",
