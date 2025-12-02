@@ -9,7 +9,7 @@
 #' @return Un `data.frame` contenant les données brutes.
 #'
 #' @family Fonctions validation
-#' #' @examples
+#' @examples
 #' # Création d'un fichier CSV temporaire pour l'exemple
 #' tf <- tempfile(fileext = ".csv")
 #' writeLines("col1;col2\n1;a\n2;b", tf)
@@ -51,7 +51,7 @@ read_raw_csv <- function(file_path) {
 #'
 #' @family Fonctions validation
 #'
-#' #' @examples
+#' @examples
 #' df <- data.frame(id = 1:3, salary = c(100, 200, 300))
 #'
 #' # Cas Succès (Message)
@@ -101,7 +101,7 @@ validate_schema <- function(dataframe, required_columns, boolean_form = FALSE) {
 #' @return Un vecteur de chaînes de caractères nettoyé.
 #'
 #' @family Fonctions validation
-#' #' @examples
+#' @examples
 #' dirty_names <- c("First Name", "salary(USD)", "IsRemote?", "jobTitle")
 #' clean_names <- standardize_colnames(dirty_names)
 #' print(clean_names)
