@@ -28,6 +28,23 @@
 #' @return Le `data.frame` enrichi avec la colonne `salary_in_usd` calculée.
 #'
 #' @family Fonctions Monétaires
+#' @examples
+#' # Pour que l'exemple fonctionne, on simule la table de taux de change
+#' # Normalement, cet objet 'exchange_rates_to_usd' est chargé dans le package
+#' exchange_rates_to_usd <- data.frame(
+#'   currency = c("EUR", "GBP"),
+#'   year = c(2023, 2023),
+#'   rate = c(1.1, 1.25) # 1 EUR = 1.1 USD
+#' )
+#'
+#' df <- data.frame(
+#'   salary = c(50000, 40000),
+#'   salary_currency = c("EUR", "GBP"),
+#'   work_year = c(2023, 2023)
+#' )
+#'
+#' # Conversion
+#' convert_currency_to_usd(df)
 #' @export
 convert_currency_to_usd <- function(data) {
   if (!all(c("salary", "salary_currency", "salary_in_usd", "work_year") %in% names(data))) {

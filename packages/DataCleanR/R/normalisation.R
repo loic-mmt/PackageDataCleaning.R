@@ -21,6 +21,21 @@
 #' @return Un vecteur de type `factor` normalisé.
 #'
 #' @family Fonctions de Normalisation
+#' @examples
+#' raw_data <- c("FR", "US", "UK", "FR", "XX")
+#'
+#' # Table de correspondance
+#' map_countries <- c(
+#'   "FR" = "France",
+#'   "US" = "United States",
+#'   "UK" = "United Kingdom"
+#' )
+#'
+#' # Niveaux autorisés
+#' valid_levels <- c("France", "United States", "United Kingdom", "Unknown")
+#'
+#' # Application
+#' normalize_factor(raw_data, map_countries, valid_levels)
 #' @export
 normalize_factor <- function(vector, mapping, levels_in_factor, ordered_factor = FALSE) {
   normalized <- mapping[vector]
@@ -54,6 +69,14 @@ normalize_factor <- function(vector, mapping, levels_in_factor, ordered_factor =
 #' @return Le `data.frame` avec la colonne `remote_ratio` corrigée.
 #'
 #' @family Fonctions de Normalisation
+#' @examples
+#' df <- data.frame(remote_ratio = c("0", "100", "50", "30", "-5", "abc"))
+#'
+#' # Normalisation standard (numérique + bornage 0-100)
+#' normalize_remote_ratio(df)
+#'
+#' # Normalisation binaire (Tout ce qui est >= 50 devient 100, le reste 0)
+#' normalize_remote_ratio(df, binary = TRUE, threshold = 50)
 #' @export
 normalize_remote_ratio <- function(data, binary = FALSE, threshold = 50) {
   if (!"remote_ratio" %in% names(data)) {
@@ -97,6 +120,14 @@ normalize_remote_ratio <- function(data, binary = FALSE, threshold = 50) {
 #'
 #' @family Fonctions de Normalisation
 #' @seealso \code{\link{normalize_factor}}, \code{\link{normalize_remote_ratio}}
+#' @examples
+#' \dontrun{
+#' # Cet exemple ne tourne pas automatiquement car il nécessite
+#' # que les objets de mapping (mapping_total, levels_iso2, etc.)
+#' # soient présents dans l'environnement global.
+#'
+#' df_clean <- normalize_all(salary_tbl_raw)
+#' }
 #' @export
 normalize_all <- function(data) {
   #Normalize company location and creation of a regionnal grouping.

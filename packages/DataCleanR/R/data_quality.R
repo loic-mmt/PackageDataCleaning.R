@@ -21,6 +21,19 @@
 #' @return Un `data.frame` filtré (le nombre de lignes peut être inférieur à l'original).
 #'
 #' @family Qualité des Données
+#' @examples
+#' # Données avec une ligne invalide (salary négatif et remote_ratio > 100)
+#' df <- data.frame(
+#'   salary = c(50000, -100, 60000),
+#'   remote_ratio = c(50, 150, 100),
+#'   work_year = c(2022, 2022, 2023)
+#' )
+#'
+#' # Application du filtre
+#' df_clean <- validate_ranges(df)
+#'
+#' # Résultat : ne garde que les lignes valides
+#' nrow(df_clean) # Devrait être 2
 #' @export
 
 validate_ranges <- function(data, min_year = 2000, max_year = as.integer(format(Sys.Date(), "%Y"))) {
@@ -56,6 +69,7 @@ validate_ranges <- function(data, min_year = 2000, max_year = as.integer(format(
 }
 
 
+
 #' Cap salary outliers (quantile)
 #'
 #' @description
@@ -86,6 +100,17 @@ validate_ranges <- function(data, min_year = 2000, max_year = as.integer(format(
 #' @return Le `data.frame` avec la colonne cible modifiée (les valeurs extrêmes sont "écrasées").
 #'
 #' @family Qualité des Données
+#' @examples
+#' # Jeu de données avec un salaire extrême (1 million)
+#' df <- data.frame(
+#'   salary_in_usd = c(50000, 55000, 60000, 45000, 1000000)
+#' )
+#'
+#' # On plafonne les 10% supérieurs (Winsorisation)
+#' df_capped <- cap_outliers_salary(df, lower = 0.1, upper = 0.9, clip_side = "upper")
+#'
+#' # La valeur 1,000,000 a été remplacée par le 90ème percentile
+#' print(df_capped)
 #' @export
 cap_outliers_salary <- function(data,
                                 col = "salary_in_usd",

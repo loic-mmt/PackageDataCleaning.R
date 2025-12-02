@@ -8,7 +8,18 @@
 #'
 #' @return Un `data.frame` contenant les données brutes.
 #'
-#' @family Fonctions Validation
+#' @family Fonctions validation
+#' #' @examples
+#' # Création d'un fichier CSV temporaire pour l'exemple
+#' tf <- tempfile(fileext = ".csv")
+#' writeLines("col1;col2\n1;a\n2;b", tf)
+#'
+#' # Utilisation de la fonction
+#' df <- read_raw_csv(tf)
+#' print(df)
+#'
+#' # Nettoyage
+#' unlink(tf)
 #' @export
 read_raw_csv <- function(file_path) {
   data <- read.csv(file_path, sep = ";", stringsAsFactors = FALSE)
@@ -38,7 +49,21 @@ read_raw_csv <- function(file_path) {
 #'   \item Si `boollean_form = FALSE` : Une chaîne de caractères (message de succès ou d'erreur).
 #' }
 #'
-#' @family Fonctions Validation
+#' @family Fonctions validation
+#'
+#' #' @examples
+#' df <- data.frame(id = 1:3, salary = c(100, 200, 300))
+#'
+#' # Cas Succès (Message)
+#' validate_schema(df, c("id", "salary"))
+#'
+#' # Cas Échec (Message)
+#' validate_schema(df, c("id", "salary", "age"))
+#'
+#' # Cas Succès (Booléen)
+#' if(validate_schema(df, c("id"), boolean_form = TRUE)) {
+#'   print("Tout est OK !")
+#' }
 #' @export
 validate_schema <- function(dataframe, required_columns, boolean_form = FALSE) {
   not_commun <- required_columns[!required_columns %in% names(dataframe)]
@@ -57,7 +82,7 @@ validate_schema <- function(dataframe, required_columns, boolean_form = FALSE) {
   return(presence)
 }
 
-#' Standardiser les noms de colonnes (snake_case)
+#' Standardiser les noms de colonnes
 #'
 #' @description
 #' Convertit un vecteur de chaînes de caractères (noms de colonnes) en format standard `snake_case`.
@@ -76,6 +101,11 @@ validate_schema <- function(dataframe, required_columns, boolean_form = FALSE) {
 #' @return Un vecteur de chaînes de caractères nettoyé.
 #'
 #' @family Fonctions validation
+#' #' @examples
+#' dirty_names <- c("First Name", "salary(USD)", "IsRemote?", "jobTitle")
+#' clean_names <- standardize_colnames(dirty_names)
+#' print(clean_names)
+#' # Résultat attendu : "first_name", "salary_usd", "is_remote", "job_title"
 #' @export
 standardize_colnames <- function(data) {
   data <- gsub("[^A-Za-z0-9]+", "_", data)
@@ -108,8 +138,20 @@ standardize_colnames <- function(data) {
 #'
 #' @return Un nouveau `data.frame` avec les types optimisés.
 #'
-#' @family Fonctions Validation
+#' @family Fonctions validation
 #' @seealso \code{\link{standardize_colnames}}
+#' @examples
+#' df <- data.frame(
+#'   id = c("1", "2", "3"),              # Devrait devenir integer
+#'   cat = c("A", "A", "B"),             # Devrait devenir factor
+#'   text = c("Unique1", "Unique2", "Unique3"), # Reste character
+#'   stringsAsFactors = FALSE
+#' )
+#'
+#' str(df) # Tout est character au début
+#'
+#' df_typed <- enforce_types(df, max_factor_levels = 2)
+#' str(df_typed) # Types corrigés
 #' @export
 enforce_types <- function(data, num_threshold = 0.9, max_factor_levels = 20) {
   out <- data
@@ -185,7 +227,19 @@ enforce_types <- function(data, num_threshold = 0.9, max_factor_levels = 20) {
 #' @return Le `data.frame` sans doublons.
 #'   L'objet retourné possède un attribut `"n_removed"` indiquant le nombre de lignes supprimées.
 #'
-#' @family Fonctions Validation
+#' @family Fonctions validation
+#' @examples
+#' df <- data.frame(
+#'   id = c(1, 1, 2, 3),
+#'   val = c("a", "a", "b", "c")
+#' )
+#'
+#' # Supprime le doublon exact (ligne 2)
+#' deduplicate_rows(df)
+#'
+#' # Déduplication basée uniquement sur l'ID (garde la dernière occurrence)
+#' df2 <- data.frame(id = c(1, 1), val = c("a", "b"))
+#' deduplicate_rows(df2, keys = "id", keep = "last")
 #' @export
 deduplicate_rows <- function(data, keys = NULL, keep = c("first", "last")) {
   keep <- match.arg(keep)

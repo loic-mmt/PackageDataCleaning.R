@@ -34,6 +34,18 @@
 #' @return Le `data.frame` avec les valeurs manquantes imputées.
 #'
 #' @family Gestion des NA
+#' @examples
+#' df <- data.frame(
+#'   val_num = c(10, 20, NA, 40, 100),
+#'   val_cat = c("A", "B", NA, "A", "A"),
+#'   stringsAsFactors = TRUE
+#' )
+#'
+#' # Imputation : médiane pour les nombres, mode pour les facteurs
+#' df_imp <- impute_missing(df)
+#'
+#' # Vérification
+#' print(df_imp)
 #' @export
 impute_missing <- function(data,
                            cols = NULL,
