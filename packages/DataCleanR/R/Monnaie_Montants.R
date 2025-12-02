@@ -37,10 +37,11 @@
 #'   rate = c(1.1, 1.25) # 1 EUR = 1.1 USD
 #' )
 #'
-#' df <- data.frame(
-#'   salary = c(50000, 40000),
-#'   salary_currency = c("EUR", "GBP"),
-#'   work_year = c(2023, 2023)
+#' df <-  data.frame(
+#'  salary = 60000,
+#'    salary_currency = "GBP",
+#'   salary_in_usd = 75000,
+#'    work_year = 2023
 #' )
 #'
 #' # Conversion
