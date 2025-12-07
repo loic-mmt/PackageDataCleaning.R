@@ -8,7 +8,7 @@
 #'
 #' @return Un `data.frame` contenant les données brutes.
 #'
-#' @family Fonctions validation
+#' @family Fonctions Validation
 #' @examples
 #' # Création d'un fichier CSV temporaire pour l'exemple
 #' tf <- tempfile(fileext = ".csv")
@@ -49,7 +49,7 @@ read_raw_csv <- function(file_path) {
 #'   \item Si `boollean_form = FALSE` : Une chaîne de caractères (message de succès ou d'erreur).
 #' }
 #'
-#' @family Fonctions validation
+#' @family Fonctions Validation
 #'
 #' @examples
 #' df <- data.frame(id = 1:3, salary = c(100, 200, 300))
@@ -100,7 +100,7 @@ validate_schema <- function(dataframe, required_columns, boolean_form = FALSE) {
 #'
 #' @return Un vecteur de chaînes de caractères nettoyé.
 #'
-#' @family Fonctions validation
+#' @family Fonctions Validation
 #' @examples
 #' dirty_names <- c("First Name", "salary(USD)", "IsRemote?", "jobTitle")
 #' clean_names <- standardize_colnames(dirty_names)
@@ -138,7 +138,7 @@ standardize_colnames <- function(data) {
 #'
 #' @return Un nouveau `data.frame` avec les types optimisés.
 #'
-#' @family Fonctions validation
+#' @family Fonctions Validation
 #' @seealso \code{\link{standardize_colnames}}
 #' @examples
 #' df <- data.frame(
@@ -227,7 +227,7 @@ enforce_types <- function(data, num_threshold = 0.9, max_factor_levels = 20) {
 #' @return Le `data.frame` sans doublons.
 #'   L'objet retourné possède un attribut `"n_removed"` indiquant le nombre de lignes supprimées.
 #'
-#' @family Fonctions validation
+#' @family Fonctions Validation
 #' @examples
 #' df <- data.frame(
 #'   id = c(1, 1, 2, 3),
