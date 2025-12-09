@@ -1,40 +1,33 @@
 template:
   bootstrap: 5
-  bootswatch: flatly
-
-navbar:
-  title: "DataCleanR"
-  left:
-    - text: "Fonctions (Référence)"
-      href: reference/index.html
+  bootswatch: Minty
 
 reference:
-  - title: "Validation des Données"
-    desc: "Fonctions pour vérifier la structure et les contraintes des fichiers."
+  - title: " Import & Validation"
+    desc: "Vérifier que les fichiers sont conformes."
     contents:
       - has_concept("Fonctions Validation")
 
-  - title: "Normalisation"
-    desc: "Outils pour nettoyer les chaînes de caractères et standardiser les formats."
+  - title: " Nettoyage"
+    desc: "Standardisation des colonnes et des formats."
     contents:
       - has_concept("Fonctions de Normalisation")
 
-  - title: "Gestion des Valeurs Manquantes"
-    desc: "Stratégies d imputation pour les NA."
+  - title: " Valeurs Manquantes"
+    desc: "Gérer les NA."
     contents:
       - has_concept("Gestion des NA")
 
-  - title: "Conversion Monétaire"
-    desc: "Gestion des devises et taux de change."
+  - title: " Finance"
+    desc: "Conversion des devises."
     contents:
       - has_concept("Fonctions Monétaires")
 
-  - title: "Qualité & Outliers"
-    desc: "Détection et traitement des anomalies statistiques."
+  - title: " Qualité des Données"
+    desc: "Détection des outliers et règles métier."
     contents:
       - has_concept("Qualité des Données")
 
-  - title: "Exportation"
-    desc: "Sauvegarde et persistance des résultats."
+  - title: " Export"
     contents:
-      - has_concept("Fonctions d'Export")
+      - has_concept("Fonctions d Export")
