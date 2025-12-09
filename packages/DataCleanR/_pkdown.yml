@@ -1,5 +1,12 @@
 template:
   bootstrap: 5
+  bootswatch: flatly
+
+navbar:
+  title: "DataCleanR"
+  left:
+    - text: "Fonctions (Référence)"
+      href: reference/index.html
 
 reference:
   - title: "Validation des Données"
