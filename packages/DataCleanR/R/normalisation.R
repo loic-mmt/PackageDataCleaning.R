@@ -1,4 +1,5 @@
-#' Normalize a vector to a factor. (use with "df$col <- normalize_to_factor(df$col, mapping, levels)")
+#' Normalize a vector to a factor
+#' (use with "df$col <- normalize_to_factor(df$col, mapping, levels)")
 #'
 #' @description
 #' Transforme un vecteur brut en facteur en appliquant une table de correspondance (mapping).
