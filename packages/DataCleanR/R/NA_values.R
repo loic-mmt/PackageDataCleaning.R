@@ -1,5 +1,4 @@
 #' Impute missing values for numeric and categorical columns
-utation des valeurs manquantes (NA)
 #'
 #' @description
 #' Remplace les valeurs manquantes (`NA`) dans un `data.frame` colonne par colonne,
