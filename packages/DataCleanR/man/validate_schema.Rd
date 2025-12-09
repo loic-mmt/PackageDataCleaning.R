@@ -2,20 +2,52 @@
 % Please edit documentation in R/validation.R
 \name{validate_schema}
 \alias{validate_schema}
-\title{Test the presence of required colums in a dataframe}
+\title{Valider la présence des colonnes requises}
 \usage{
 validate_schema(dataframe, required_columns, boolean_form = FALSE)
 }
 \arguments{
-\item{dataframe}{Dataframe to test}
+\item{dataframe}{Le \code{data.frame} à tester.}
 
-\item{required_colums}{vector with the required colums names to test in dataframe}
+\item{required_columns}{Un vecteur contenant les noms des colonnes attendues.}
 
-\item{boollean_form}{Instruction if we want the outpout on a boolean form}
+\item{boollean_form}{Logique (\code{TRUE}/\code{FALSE}). Si \code{TRUE}, renvoie un booléen simple. Si \code{FALSE}, renvoie un message détaillé.}
 }
 \value{
-presence Indication to the user on the preence of the colums
+\itemize{
+\item Si \code{boollean_form = TRUE} : Un booléen.
+\item Si \code{boollean_form = FALSE} : Une chaîne de caractères (message de succès ou d'erreur).
+}
 }
 \description{
-Test the presence of required colums in a dataframe
+Vérifie si un \code{data.frame} contient bien toutes les colonnes nécessaires à la suite du traitement.
 }
+\details{
+Cette fonction permet deux modes de retour via l'argument \code{boolean_form} :
+\itemize{
+\item \strong{Mode booléen} : Renvoie \code{TRUE} ou \code{FALSE}. Utile pour les conditions \code{if}.
+\item \strong{Mode verbeux} (par défaut) : Renvoie un message textuel indiquant explicitement quelles colonnes sont manquantes.
+}
+}
+\examples{
+df <- data.frame(id = 1:3, salary = c(100, 200, 300))
+
+# Cas Succès (Message)
+validate_schema(df, c("id", "salary"))
+
+# Cas Échec (Message)
+validate_schema(df, c("id", "salary", "age"))
+
+# Cas Succès (Booléen)
+if(validate_schema(df, c("id"), boolean_form = TRUE)) {
+  print("Tout est OK !")
+}
+}
+\seealso{
+Other Fonctions Validation: 
+\code{\link{deduplicate_rows}()},
+\code{\link{enforce_types}()},
+\code{\link{read_raw_csv}()},
+\code{\link{standardize_colnames}()}
+}
+\concept{Fonctions Validation}

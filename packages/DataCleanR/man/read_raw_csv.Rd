@@ -2,16 +2,37 @@
 % Please edit documentation in R/validation.R
 \name{read_raw_csv}
 \alias{read_raw_csv}
-\title{Import CSV as data.frame}
+\title{Charger un fichier CSV brut}
 \usage{
 read_raw_csv(file_path)
 }
 \arguments{
-\item{file_path}{chemin vers le CSV}
+\item{file_path}{Une chaîne de caractères indiquant le chemin vers le fichier CSV.}
 }
 \value{
-data.frame
+Un \code{data.frame} contenant les données brutes.
 }
 \description{
-Import CSV as data.frame
+Lit un fichier CSV depuis le disque et le charge dans un \code{data.frame}.
+Cette fonction impose des séparateurs "point-virgule" et ne convertit pas les chaînes en facteurs.
 }
+\examples{
+# Création d'un fichier CSV temporaire pour l'exemple
+tf <- tempfile(fileext = ".csv")
+writeLines("col1;col2\n1;a\n2;b", tf)
+
+# Utilisation de la fonction
+df <- read_raw_csv(tf)
+print(df)
+
+# Nettoyage
+unlink(tf)
+}
+\seealso{
+Other Fonctions Validation: 
+\code{\link{deduplicate_rows}()},
+\code{\link{enforce_types}()},
+\code{\link{standardize_colnames}()},
+\code{\link{validate_schema}()}
+}
+\concept{Fonctions Validation}

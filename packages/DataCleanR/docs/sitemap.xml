@@ -1,0 +1,21 @@
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/reference/cap_outliers_salary.html</loc></url>
+<url><loc>/reference/convert_currency_to_usd.html</loc></url>
+<url><loc>/reference/deduplicate_rows.html</loc></url>
+<url><loc>/reference/enforce_types.html</loc></url>
+<url><loc>/reference/export_csv.html</loc></url>
+<url><loc>/reference/finalize_salary_tbl.html</loc></url>
+<url><loc>/reference/impute_missing.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/normalize_all.html</loc></url>
+<url><loc>/reference/normalize_factor.html</loc></url>
+<url><loc>/reference/normalize_remote_ratio.html</loc></url>
+<url><loc>/reference/read_raw_csv.html</loc></url>
+<url><loc>/reference/standardize_colnames.html</loc></url>
+<url><loc>/reference/validate_ranges.html</loc></url>
+<url><loc>/reference/validate_schema.html</loc></url>
+</urlset>
+

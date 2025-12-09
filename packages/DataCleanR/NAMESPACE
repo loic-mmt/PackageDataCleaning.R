@@ -2,10 +2,13 @@
 
 export(cap_outliers_salary)
 export(convert_currency_to_usd)
+export(currencies_levels)
 export(deduplicate_rows)
 export(enforce_types)
+export(exchange_rates_to_usd)
 export(experience_labels_ordered)
 export(experience_mapping)
+export(export_csv)
 export(finalize_salary_tbl)
 export(impute_missing)
 export(levels_employement_type)

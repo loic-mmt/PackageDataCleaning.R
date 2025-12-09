@@ -2,16 +2,39 @@
 % Please edit documentation in R/validation.R
 \name{standardize_colnames}
 \alias{standardize_colnames}
-\title{Convert strings to snake_case}
+\title{Standardiser les noms de colonnes}
 \usage{
 standardize_colnames(data)
 }
 \arguments{
-\item{data}{character Vector of strings to convert.}
+\item{data}{Un vecteur de chaînes de caractères (ex: \code{names(df)}).}
 }
 \value{
-character Vector in snake_case.
+Un vecteur de chaînes de caractères nettoyé.
 }
 \description{
-Convert strings to snake_case
+Convertit un vecteur de chaînes de caractères (noms de colonnes) en format standard \code{snake_case}.
 }
+\details{
+La normalisation applique les règles suivantes :
+\enumerate{
+\item Remplacement de tout caractère non-alphanumérique par \verb{_}.
+\item Gestion du CamelCase (insertion d'un \verb{_} entre minuscule et majuscule).
+\item Passage en minuscules.
+\item Suppression des \verb{_} multiples et nettoyage des extrémités.
+}
+}
+\examples{
+dirty_names <- c("First Name", "salary(USD)", "IsRemote?", "jobTitle")
+clean_names <- standardize_colnames(dirty_names)
+print(clean_names)
+# Résultat attendu : "first_name", "salary_usd", "is_remote", "job_title"
+}
+\seealso{
+Other Fonctions Validation: 
+\code{\link{deduplicate_rows}()},
+\code{\link{enforce_types}()},
+\code{\link{read_raw_csv}()},
+\code{\link{validate_schema}()}
+}
+\concept{Fonctions Validation}

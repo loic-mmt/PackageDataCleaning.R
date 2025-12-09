@@ -1,0 +1,33 @@
+template:
+  bootstrap: 5
+
+reference:
+  - title: "Validation des Données"
+    desc: "Fonctions pour vérifier la structure et les contraintes des fichiers."
+    contents:
+      - has_concept("Fonctions Validation")
+
+  - title: "Normalisation"
+    desc: "Outils pour nettoyer les chaînes de caractères et standardiser les formats."
+    contents:
+      - has_concept("Fonctions de Normalisation")
+
+  - title: "Gestion des Valeurs Manquantes"
+    desc: "Stratégies d imputation pour les NA."
+    contents:
+      - has_concept("Gestion des NA")
+
+  - title: "Conversion Monétaire"
+    desc: "Gestion des devises et taux de change."
+    contents:
+      - has_concept("Fonctions Monétaires")
+
+  - title: "Qualité & Outliers"
+    desc: "Détection et traitement des anomalies statistiques."
+    contents:
+      - has_concept("Qualité des Données")
+
+  - title: "Exportation"
+    desc: "Sauvegarde et persistance des résultats."
+    contents:
+      - has_concept("Fonctions d'Export")

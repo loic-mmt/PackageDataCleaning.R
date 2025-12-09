@@ -11,15 +11,45 @@ validate_ranges(
 )
 }
 \arguments{
-\item{data}{Data frame contenant les colonnes à valider}
+\item{data}{Le \code{data.frame} contenant les colonnes \code{salary}, \code{remote_ratio} et \code{work_year}.}
 
-\item{min_year}{Année minimale acceptable (par défaut 2000)}
+\item{min_year}{Entier. Année minimale acceptable (défaut 2000).}
 
-\item{max_year}{Année maximale acceptable (par défaut année courante)}
+\item{max_year}{Entier. Année maximale acceptable (défaut : année courante système).}
 }
 \value{
-Data frame filtré contenant uniquement les lignes valides
+Un \code{data.frame} filtré (le nombre de lignes peut être inférieur à l'original).
 }
 \description{
-Vérifie que les données respectent les contraintes de plage (salary > 0, remote_ratio entre 0 et 100, années plausibles)
+Vérifie que les données respectent les règles métier et \strong{supprime} les lignes invalides.
+Les règles incluent : salaire strictement positif, ratio de télétravail entre 0 et 100, et année de travail plausible.
 }
+\details{
+Cette fonction applique un filtre strict. Une ligne est conservée uniquement si toutes les conditions suivantes sont vraies :
+\itemize{
+\item \code{salary} > 0
+\item \code{remote_ratio} est compris entre 0 et 100 inclus.
+\item \code{work_year} est compris entre \code{min_year} et \code{max_year}.
+\item Aucune de ces valeurs n'est \code{NA}.
+}
+Un message est affiché dans la console si des lignes sont supprimées.
+}
+\examples{
+# Données avec une ligne invalide (salary négatif et remote_ratio > 100)
+df <- data.frame(
+  salary = c(50000, -100, 60000),
+  remote_ratio = c(50, 150, 100),
+  work_year = c(2022, 2022, 2023)
+)
+
+# Application du filtre
+df_clean <- validate_ranges(df)
+
+# Résultat : ne garde que les lignes valides
+nrow(df_clean) # Devrait être 2
+}
+\seealso{
+Other Qualité des Données: 
+\code{\link{cap_outliers_salary}()}
+}
+\concept{Qualité des Données}

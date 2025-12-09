@@ -1,4 +1,5 @@
 #' Impute missing values for numeric and categorical columns
+utation des valeurs manquantes (NA)
 #'
 #' @description
 #' Remplace les valeurs manquantes (`NA`) dans un `data.frame` colonne par colonne,
@@ -6,21 +7,15 @@
 #'
 #' @details
 #' Les stratégies appliquées dépendent du type de la colonne :
-#' \itemize{
-#'   \item **Numérique** (`numeric`, `integer`) :
-#'     \itemize{
-#'       \item `"median"` (défaut) : Remplace par la médiane (robuste aux outliers).
-#'       \item `"mean"` : Remplace par la moyenne.
-#'       \item `"constant"` : Remplace par la valeur fournie dans `num_constant` (ex: 0).
-#'     }
-#'   \item **Catégorielle** (`character`, `factor`) :
-#'     \itemize{
-#'       \item `"mode"` (défaut) : Remplace par la valeur la plus fréquente. En cas d'égalité, l'ordre alphabétique tranche.
-#'       \item `"constant"` ou `"new_level"` : Remplace par la valeur `cat_constant` (par défaut "Missing").
-#'       \item *Note* : Si la colonne est un facteur, les niveaux (levels) sont automatiquement mis à jour pour inclure la nouvelle valeur si nécessaire.
-#'     }
-#'   \item **Logique** (`logical`) : Remplace par la valeur majoritaire (`TRUE` ou `FALSE`).
-#' }
+#' * **Numérique** (`numeric`, `integer`) :
+#'     * `"median"` (défaut) : Remplace par la médiane (robuste aux outliers).
+#'     * `"mean"` : Remplace par la moyenne.
+#'     * `"constant"` : Remplace par la valeur fournie dans `num_constant` (ex: 0).
+#' * **Catégorielle** (`character`, `factor`) :
+#'     * `"mode"` (défaut) : Remplace par la valeur la plus fréquente. En cas d'égalité, l'ordre alphabétique tranche.
+#'     * `"constant"` ou `"new_level"` : Remplace par la valeur `cat_constant` (par défaut "Missing").
+#'     * *Note* : Si la colonne est un facteur, les niveaux (levels) sont automatiquement mis à jour pour inclure la nouvelle valeur si nécessaire.
+#' * **Logique** (`logical`) : Remplace par la valeur majoritaire (`TRUE` ou `FALSE`).
 #'
 #' @param data Le `data.frame` contenant des valeurs manquantes.
 #' @param cols Vecteur de noms de colonnes à traiter (optionnel). Si `NULL` (défaut), toutes les colonnes sont traitées.

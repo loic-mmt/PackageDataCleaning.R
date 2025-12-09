@@ -7,17 +7,49 @@
 normalize_factor(vector, mapping, levels_in_factor, ordered_factor = FALSE)
 }
 \arguments{
-\item{vector}{the vector to normalize}
+\item{vector}{Le vecteur brut à normaliser.}
 
-\item{mapping}{the mapping to indicate which values to transform in which.}
+\item{mapping}{Un vecteur nommé (clé-valeur) indiquant la transformation (ex: \code{c("old_val" = "new_val")}).}
 
-\item{levels_in_factor}{les niveaux à indiquer}
+\item{levels_in_factor}{Un vecteur contenant tous les niveaux valides pour le facteur final.}
 
-\item{ordered_factor}{Indicate if the vector has to be ordonned, FALSE by default}
+\item{ordered_factor}{Logique (défaut \code{FALSE}). Si \code{TRUE}, crée un facteur ordonné.}
 }
 \value{
-normalized the normalized vector
+Un vecteur de type \code{factor} normalisé.
 }
 \description{
-Normalize a vector to a factor. (use with "df$col <- normalize_to_factor(df$col, mapping, levels)")
+Transforme un vecteur brut en facteur en appliquant une table de correspondance (mapping).
+Les valeurs non trouvées ou manquantes sont remplacées par \code{"Unknown"}.
 }
+\details{
+Cette fonction est utile pour standardiser des colonnes catégorielles mal formatées.
+Elle effectue les opérations suivantes :
+\enumerate{
+\item Remplace les valeurs du vecteur selon le \code{mapping} fourni.
+\item Remplace les \code{NA} par la chaîne \code{"Unknown"}.
+\item Convertit le résultat en \code{factor} avec les niveaux (\code{levels}) imposés.
+}
+}
+\examples{
+raw_data <- c("FR", "US", "UK", "FR", "XX")
+
+# Table de correspondance
+map_countries <- c(
+  "FR" = "France",
+  "US" = "United States",
+  "UK" = "United Kingdom"
+)
+
+# Niveaux autorisés
+valid_levels <- c("France", "United States", "United Kingdom", "Unknown")
+
+# Application
+normalize_factor(raw_data, map_countries, valid_levels)
+}
+\seealso{
+Other Fonctions de Normalisation: 
+\code{\link{normalize_all}()},
+\code{\link{normalize_remote_ratio}()}
+}
+\concept{Fonctions de Normalisation}

@@ -7,11 +7,51 @@
 convert_currency_to_usd(data)
 }
 \arguments{
-\item{data}{Data frame contenant les colonnes salary, salary_currency, salary_in_usd et work_year}
+\item{data}{Un \code{data.frame} contenant obligatoirement les colonnes :
+\itemize{
+\item \code{salary} : Le montant brut dans la devise locale.
+\item \code{salary_currency} : Le code ISO de la devise (ex: "EUR", "GBP").
+\item \code{work_year} : L'année fiscale de référence.
+\item \code{salary_in_usd} : (Optionnel, sera écrasé/créé).
+}}
 }
 \value{
-Data frame avec les salaires convertis en USD
+Le \code{data.frame} enrichi avec la colonne \code{salary_in_usd} calculée.
 }
 \description{
-Convertit les salaires de différentes devises en USD en utilisant des taux de change historiques annuels
+Convertit les montants des salaires locaux vers le dollar américain (USD).
+Cette fonction prend en compte la variation des taux de change selon l'année de travail (\code{work_year}).
 }
+\details{
+La procédure de conversion est la suivante :
+\enumerate{
+\item \strong{Validation} : Vérifie la présence des colonnes \code{salary}, \code{salary_currency} et \code{work_year}.
+\item \strong{Typage} : Assure que le salaire est numérique et l'année est un entier.
+\item \strong{Jointure} : Fusionne les données avec la table de référence \code{exchange_rates_to_usd} sur la base de la devise et de l'année.
+\item \strong{Calcul} : Applique le taux de change pour mettre à jour \code{salary_in_usd}.
+\item \strong{Nettoyage} : Supprime les colonnes temporaires de taux (\code{rate}).
+}
+}
+\note{
+Cette fonction dépend de l'objet global \code{exchange_rates_to_usd} qui doit contenir les colonnes \code{currency}, \code{year} et \code{rate}.
+}
+\examples{
+# Pour que l'exemple fonctionne, on simule la table de taux de change
+# Normalement, cet objet 'exchange_rates_to_usd' est chargé dans le package
+exchange_rates_to_usd <- data.frame(
+  currency = c("EUR", "GBP"),
+  year = c(2023, 2023),
+  rate = c(1.1, 1.25) # 1 EUR = 1.1 USD
+)
+
+df <-  data.frame(
+ salary = 60000,
+   salary_currency = "GBP",
+  salary_in_usd = 75000,
+   work_year = 2023
+)
+
+# Conversion
+convert_currency_to_usd(df)
+}
+\concept{Fonctions Monétaires}

@@ -16,28 +16,58 @@ impute_missing(
 )
 }
 \arguments{
-\item{data}{data.frame d'entrée.}
+\item{data}{Le \code{data.frame} contenant des valeurs manquantes.}
 
-\item{cols}{(optionnel) noms de colonnes à imputer. Par défaut: toutes.}
+\item{cols}{Vecteur de noms de colonnes à traiter (optionnel). Si \code{NULL} (défaut), toutes les colonnes sont traitées.}
 
-\item{exclude}{(optionnel) colonnes à exclure après \code{cols}.}
+\item{exclude}{Vecteur de noms de colonnes à exclure du traitement (optionnel).}
 
-\item{num_method}{"median", "mean" ou "constant". Défaut: "median".}
+\item{num_method}{Méthode pour les numériques : \code{"median"}, \code{"mean"} ou \code{"constant"}.}
 
-\item{cat_method}{"mode", "constant" ou "new_level". Défaut: "mode".}
+\item{cat_method}{Méthode pour les textes/facteurs : \code{"mode"}, \code{"constant"} ou \code{"new_level"}.}
 
-\item{num_constant}{valeur numérique utilisée si \code{num_method="constant"} (ou si toute la colonne est NA). Défaut: 0.}
+\item{num_constant}{Valeur utilisée si \code{num_method = "constant"} (défaut \code{0}).}
 
-\item{cat_constant}{valeur utilisée si \code{cat_method} est "constant" ou "new_level" (ou si toute la colonne est NA). Défaut: "Missing".}
+\item{cat_constant}{Valeur utilisée si \code{cat_method = "constant"} (défaut \code{"Missing"}).}
 
-\item{verbose}{afficher un résumé par colonne. Défaut: TRUE.}
+\item{verbose}{Logique. Si \code{TRUE} (défaut), affiche un message dans la console pour chaque colonne imputée.}
 }
 \value{
-Le data.frame avec les NA imputés.
+Le \code{data.frame} avec les valeurs manquantes imputées.
 }
 \description{
-Impute \code{NA} values column-wise with simple, dependency-free strategies.
-Numeric: "median", "mean" ou "constant".
-Catégorielles (character/factor): "mode", "constant" ou "new_level" (étiquette par défaut: "Missing").
-Logiques: imputées à la valeur majoritaire.
+Remplace les valeurs manquantes (\code{NA}) dans un \code{data.frame} colonne par colonne,
+en appliquant des stratégies simples et indépendantes (sans dépendances externes complexes).
 }
+\details{
+Les stratégies appliquées dépendent du type de la colonne :
+\itemize{
+\item \strong{Numérique} (\code{numeric}, \code{integer}) :
+\itemize{
+\item \code{"median"} (défaut) : Remplace par la médiane (robuste aux outliers).
+\item \code{"mean"} : Remplace par la moyenne.
+\item \code{"constant"} : Remplace par la valeur fournie dans \code{num_constant} (ex: 0).
+}
+\item \strong{Catégorielle} (\code{character}, \code{factor}) :
+\itemize{
+\item \code{"mode"} (défaut) : Remplace par la valeur la plus fréquente. En cas d'égalité, l'ordre alphabétique tranche.
+\item \code{"constant"} ou \code{"new_level"} : Remplace par la valeur \code{cat_constant} (par défaut "Missing").
+\item \emph{Note} : Si la colonne est un facteur, les niveaux (levels) sont automatiquement mis à jour pour inclure la nouvelle valeur si nécessaire.
+}
+\item \strong{Logique} (\code{logical}) : Remplace par la valeur majoritaire (\code{TRUE} ou \code{FALSE}).
+}
+}
+\examples{
+df <- data.frame(
+  val_num = c(10, 20, NA, 40, 100),
+  val_cat = c("A", "B", NA, "A", "A"),
+  stringsAsFactors = TRUE
+)
+
+# Imputation : médiane pour les nombres, mode pour les facteurs
+df_imp <- impute_missing(df)
+
+# Vérification
+print(df_imp)
+}
+\concept{Gestion des NA}

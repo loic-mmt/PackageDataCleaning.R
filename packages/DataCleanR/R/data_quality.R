@@ -77,24 +77,15 @@ validate_ranges <- function(data, min_year = 2000, max_year = as.integer(format(
 #' C'est une technique de "Winsorisation".
 #'
 #' @details
-#' La fonction calcule deux bornes :
-#' \itemize{
-#'   \item **L (Lower)** : Le quantile correspondant à la probabilité `lower` (ex: 1\%).
-#'   \item **U (Upper)** : Le quantile correspondant à la probabilité `upper` (ex: 99\%).
-#' }
-#' Selon le paramètre `clip_side`, les valeurs inférieures à L sont remplacées par L, et les valeurs supérieures à U sont remplacées par U.
+#' La fonction calcule deux bornes, L (Lower) et U (Upper), correspondant aux probabilités demandées.
+#' Les valeurs inférieures à L sont remplacées par L, et les valeurs supérieures à U sont remplacées par U.
 #'
 #' @param data Le `data.frame` contenant les données.
-#' @param col Chaîne de caractères. Nom de la colonne à traiter (défaut `"salary_in_usd"`).
-#' @param lower Probabilité pour le quantile bas (0 à 1, défaut 0.01 pour 1\%).
-#' @param upper Probabilité pour le quantile haut (0 à 1, défaut 0.99 pour 99\%).
-#' @param clip_side Stratégie de plafonnement :
-#'   \itemize{
-#'     \item `"both"` (défaut) : Plafonne en bas et en haut.
-#'     \item `"upper"` : Plafonne uniquement les valeurs hautes.
-#'     \item `"lower"` : Plafonne uniquement les valeurs basses.
-#'   }
-#' @param na_rm Logique. Ignorer les `NA` lors du calcul des quantiles (défaut `TRUE`).
+#' @param col Chaîne de caractères. Nom de la colonne à traiter (défaut "salary_in_usd").
+#' @param lower Probabilité pour le quantile bas (0 à 1, défaut 0.01).
+#' @param upper Probabilité pour le quantile haut (0 à 1, défaut 0.99).
+#' @param clip_side Stratégie de plafonnement : "both" (défaut), "upper" ou "lower".
+#' @param na_rm Logique. Ignorer les `NA` lors du calcul des quantiles (défaut TRUE).
 #' @param verbose Logique. Affiche un résumé des remplacements effectués.
 #'
 #' @return Le `data.frame` avec la colonne cible modifiée (les valeurs extrêmes sont "écrasées").

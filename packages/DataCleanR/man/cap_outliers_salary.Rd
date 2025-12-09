@@ -15,26 +15,45 @@ cap_outliers_salary(
 )
 }
 \arguments{
-\item{data}{data.frame.}
+\item{data}{Le \code{data.frame} contenant les données.}
 
-\item{col}{Nom de la colonne numérique à traiter (défaut: "salary_in_usd").}
+\item{col}{Chaîne de caractères. Nom de la colonne à traiter (défaut "salary_in_usd").}
 
-\item{lower}{Probabilité du quantile bas (défaut 0.01).}
+\item{lower}{Probabilité pour le quantile bas (0 à 1, défaut 0.01).}
 
-\item{upper}{Probabilité du quantile haut (défaut 0.99).}
+\item{upper}{Probabilité pour le quantile haut (0 à 1, défaut 0.99).}
 
-\item{clip_side}{"both" (défaut), "upper" ou "lower".}
+\item{clip_side}{Stratégie de plafonnement : "both" (défaut), "upper" ou "lower".}
 
-\item{na_rm}{logique; ignorer les NA pour le calcul des quantiles (défaut TRUE).}
+\item{na_rm}{Logique. Ignorer les \code{NA} lors du calcul des quantiles (défaut TRUE).}
 
-\item{verbose}{logique; afficher un résumé des opérations.}
+\item{verbose}{Logique. Affiche un résumé des remplacements effectués.}
 }
 \value{
-Le \code{data.frame} modifié (mêmes dimensions, valeurs extrêmes filtrées).
+Le \code{data.frame} avec la colonne cible modifiée (les valeurs extrêmes sont "écrasées").
 }
 \description{
-Winsorise une colonne numérique en plafonnant par quantiles.
-On calcule \code{L = quantile(x, lower)} et \code{U = quantile(x, upper)}
-puis on remplace les valeurs en dehors de \code{[L, U]} (selon \code{clip_side}).
-Retourne le data.frame filtré.
+Traite les valeurs extrêmes (outliers) d'une colonne numérique en les remplaçant par les valeurs des quantiles limites.
+C'est une technique de "Winsorisation".
 }
+\details{
+La fonction calcule deux bornes, L (Lower) et U (Upper), correspondant aux probabilités demandées.
+Les valeurs inférieures à L sont remplacées par L, et les valeurs supérieures à U sont remplacées par U.
+}
+\examples{
+# Jeu de données avec un salaire extrême (1 million)
+df <- data.frame(
+  salary_in_usd = c(50000, 55000, 60000, 45000, 1000000)
+)
+
+# On plafonne les 10\% supérieurs (Winsorisation)
+df_capped <- cap_outliers_salary(df, lower = 0.1, upper = 0.9, clip_side = "upper")
+
+# La valeur 1,000,000 a été remplacée par le 90ème percentile
+print(df_capped)
+}
+\seealso{
+Other Qualité des Données: 
+\code{\link{validate_ranges}()}
+}
+\concept{Qualité des Données}

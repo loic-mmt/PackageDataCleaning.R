@@ -7,15 +7,45 @@
 deduplicate_rows(data, keys = NULL, keep = c("first", "last"))
 }
 \arguments{
-\item{data}{data to deduplicate.}
+\item{data}{Le \code{data.frame} à dédupliquer.}
 
-\item{keys}{character|null Columns used as unique key; default NULL = all columns.}
+\item{keys}{Vecteur de noms de colonnes ou \code{NULL}.
+\itemize{
+\item Si \code{NULL} (défaut) : Toutes les colonnes sont utilisées pour identifier les doublons.
+\item Si Vecteur : Seules ces colonnes définissent l'unicité (ex: \code{c("ID", "Date")}).
+}}
 
-\item{keep}{character Keep "first" or "last" occurrence when duplicates exist.}
+\item{keep}{Chaîne de caractères indiquant quelle ligne garder en cas de doublon :
+\itemize{
+\item \code{"first"} : Garde la première occurrence trouvée.
+\item \code{"last"} : Garde la dernière occurrence trouvée.
+}}
 }
 \value{
-deduplicated data.
+Le \code{data.frame} sans doublons.
+L'objet retourné possède un attribut \code{"n_removed"} indiquant le nombre de lignes supprimées.
 }
 \description{
-Deduplicate data
+Supprime les doublons dans un \code{data.frame} en se basant sur une clé composée de colonnes spécifiques.
 }
+\examples{
+df <- data.frame(
+  id = c(1, 1, 2, 3),
+  val = c("a", "a", "b", "c")
+)
+
+# Supprime le doublon exact (ligne 2)
+deduplicate_rows(df)
+
+# Déduplication basée uniquement sur l'ID (garde la dernière occurrence)
+df2 <- data.frame(id = c(1, 1), val = c("a", "b"))
+deduplicate_rows(df2, keys = "id", keep = "last")
+}
+\seealso{
+Other Fonctions Validation: 
+\code{\link{enforce_types}()},
+\code{\link{read_raw_csv}()},
+\code{\link{standardize_colnames}()},
+\code{\link{validate_schema}()}
+}
+\concept{Fonctions Validation}

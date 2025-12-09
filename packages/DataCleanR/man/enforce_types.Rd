@@ -7,15 +7,49 @@
 enforce_types(data, num_threshold = 0.9, max_factor_levels = 20)
 }
 \arguments{
-\item{data}{data.frame Input data}
+\item{data}{Le \code{data.frame} en entrée.}
 
-\item{num_threshold}{numeric Proportion threshold for numeric conversion (default 0.9)}
+\item{num_threshold}{Proportion (0 à 1). Seuil de valeurs valides nécessaires pour convertir en numérique (défaut 0.9).}
 
-\item{max_factor_levels}{integer Max distinct levels to convert to factor (default 20)}
+\item{max_factor_levels}{Entier. Nombre maximum de modalités pour convertir en facteur (défaut 20).}
 }
 \value{
-data.frame Data with basic types enforced
+Un nouveau \code{data.frame} avec les types optimisés.
 }
 \description{
-Enforce simple column types
+Analyse chaque colonne d'un \code{data.frame} et tente de convertir les types \code{character}
+en types plus appropriés (\code{numeric}, \code{integer} ou \code{factor}).
 }
+\details{
+L'algorithme procède colonne par colonne :
+\itemize{
+\item Ignore les colonnes déjà numériques ou dates.
+\item Nettoie les espaces (\code{trimws}).
+\item \strong{Conversion Numérique} : Si le ratio de valeurs convertibles dépasse \code{num_threshold}, la colonne devient numérique (ou entier si possible).
+\item \strong{Conversion Facteur} : Sinon, si le nombre de valeurs uniques est inférieur à \code{max_factor_levels}, la colonne devient un facteur.
+\item Sinon, la colonne reste en texte.
+}
+}
+\examples{
+df <- data.frame(
+  id = c("1", "2", "3"),              # Devrait devenir integer
+  cat = c("A", "A", "B"),             # Devrait devenir factor
+  text = c("Unique1", "Unique2", "Unique3"), # Reste character
+  stringsAsFactors = FALSE
+)
+
+str(df) # Tout est character au début
+
+df_typed <- enforce_types(df, max_factor_levels = 2)
+str(df_typed) # Types corrigés
+}
+\seealso{
+\code{\link{standardize_colnames}}
+
+Other Fonctions Validation: 
+\code{\link{deduplicate_rows}()},
+\code{\link{read_raw_csv}()},
+\code{\link{standardize_colnames}()},
+\code{\link{validate_schema}()}
+}
+\concept{Fonctions Validation}

@@ -2,20 +2,48 @@
 % Please edit documentation in R/normalisation.R
 \name{normalize_remote_ratio}
 \alias{normalize_remote_ratio}
-\title{titre}
+\title{Normaliser la colonne 'remote_ratio'}
 \usage{
 normalize_remote_ratio(data, binary = FALSE, threshold = 50)
 }
 \arguments{
-\item{data}{data.frame contenant la colonne \code{remote_ratio}}
+\item{data}{Le data.frame contenant la colonne \code{remote_ratio}.}
 
-\item{binary}{logique, si TRUE convertit en 0/100 (par défaut FALSE)}
+\item{binary}{Logique (défaut \code{FALSE}). Active le mode binaire (0 ou 100 uniquement).}
 
-\item{threshold}{seuil pour le binaire (défaut 50)}
+\item{threshold}{Numérique (défaut 50). Seuil pour la binarisation.
+\itemize{
+\item Si valeur >= threshold : devient 100.
+\item Si valeur < threshold : devient 0.
+}}
 }
 \value{
-data.frame avec \code{remote_ratio} corrigée
+Le \code{data.frame} avec la colonne \code{remote_ratio} corrigée.
 }
 \description{
-titre
+Nettoie et standardise la colonne \code{remote_ratio} d'un data.frame.
+Assure que les valeurs sont numériques et comprises entre 0 et 100.
 }
+\details{
+Le traitement inclut :
+\itemize{
+\item Conversion en numérique (les erreurs deviennent \code{NA}).
+\item Bornage des valeurs (\code{pmin}/\code{pmax}) : tout ce qui est < 0 devient 0, tout ce qui est > 100 devient 100.
+\item (Optionnel) Binarisation : Si \code{binary=TRUE}, les valeurs deviennent soit 0 soit 100 selon le \code{threshold}.
+}
+}
+\examples{
+df <- data.frame(remote_ratio = c("0", "100", "50", "30", "-5", "abc"))
+
+# Normalisation standard (numérique + bornage 0-100)
+normalize_remote_ratio(df)
+
+# Normalisation binaire (Tout ce qui est >= 50 devient 100, le reste 0)
+normalize_remote_ratio(df, binary = TRUE, threshold = 50)
+}
+\seealso{
+Other Fonctions de Normalisation: 
+\code{\link{normalize_all}()},
+\code{\link{normalize_factor}()}
+}
+\concept{Fonctions de Normalisation}
