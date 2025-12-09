@@ -3,31 +3,45 @@ template:
   bootswatch: Minty
 
 reference:
-  - title: " Import & Validation"
+  - title: "Validation"
     desc: "Vérifier que les fichiers sont conformes."
     contents:
-      - has_concept("Fonctions Validation")
+      - read_raw_csv
+      - validate_schema
+      - validate_ranges
+      - standardize_colnames
 
-  - title: " Nettoyage"
+  - title: "Normalisation"
     desc: "Standardisation des colonnes et des formats."
     contents:
-      - has_concept("Fonctions de Normalisation")
+      - normalize_all
+      - normalize_factor
+      - normalize_remote_ratio
+      - deduplicate_rows
+      - enforce_types
 
   - title: " Valeurs Manquantes"
     desc: "Gérer les NA."
     contents:
-      - has_concept("Gestion des NA")
+      - impute_missing
 
   - title: " Finance"
     desc: "Conversion des devises."
     contents:
-      - has_concept("Fonctions Monétaires")
+      - convert_currency_to_usd
 
   - title: " Qualité des Données"
     desc: "Détection des outliers et règles métier."
     contents:
-      - has_concept("Qualité des Données")
+      - cap_outliers_salary
 
   - title: " Export"
     contents:
-      - has_concept("Fonctions d Export")
+      - export_csv
+      - write_cleaning_report
+
+  - title: "Pipeline"
+    contents:
+    - cleaning_pipeline
+    - finalize_salary_tbl
+

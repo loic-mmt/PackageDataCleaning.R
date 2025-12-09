@@ -2,7 +2,8 @@
 % Please edit documentation in R/normalisation.R
 \name{normalize_factor}
 \alias{normalize_factor}
-\title{Normalize a vector to a factor. (use with "df$col <- normalize_to_factor(df$col, mapping, levels)")}
+\title{Normalize a vector to a factor
+(use with "df$col <- normalize_to_factor(df$col, mapping, levels)")}
 \usage{
 normalize_factor(vector, mapping, levels_in_factor, ordered_factor = FALSE)
 }
