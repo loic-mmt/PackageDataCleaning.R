@@ -1,57 +1,64 @@
-#' Exporter les données en CSV
+#' Export data to CSV
 #'
 #' @description
-#' Sauvegarde un `data.frame` dans un fichier CSV sur le disque.
-#' Cette fonction gère automatiquement la création du dossier cible, l'ajout de l'extension `.csv` et le choix du séparateur.
+#' Save a `data.frame` to a CSV file on disk.
+#' This function automatically handles creation of the target directory, appends
+#' the `.csv` extension if needed, and chooses an appropriate writer based on
+#' the column separator.
 #'
 #' @details
-#' La fonction simplifie l'exportation en effectuant les étapes suivantes :
+#' The function simplifies CSV export by performing the following steps:
 #' \enumerate{
-#'   \item Vérifie que l'objet `data` est bien un data.frame.
-#'   \item Crée le dossier `path` récursivement s'il n'existe pas encore.
-#'   \item Ajoute l'extension `.csv` au nom du fichier si elle est absente.
-#'   \item Choisit la fonction d'écriture optimisée selon le séparateur :
+#'   \item Check that the `data` object is a data.frame.
+#'   \item Create the `path` directory recursively if it does not already exist.
+#'   \item Append the `.csv` extension to the file name if it is missing.
+#'   \item Choose an optimised writing function based on the separator:
 #'     \itemize{
-#'       \item Pour `sep = ";"` : utilise `utils::write.csv2` (format européen).
-#'       \item Pour `sep = ","` : utilise `utils::write.csv` (format US).
-#'       \item Autres : utilise `utils::write.table`.
+#'       \item For `sep = ";"`: use `utils::write.csv2` (European-style format).
+#'       \item For `sep = ","`: use `utils::write.csv` (US-style format).
+#'       \item Otherwise: use `utils::write.table`.
 #'     }
 #' }
 #'
-#' @param data Le `data.frame` à exporter.
-#' @param path Chemin du dossier de destination (défaut `"exports"`). Le dossier sera créé s'il n'existe pas.
-#' @param filename Nom du fichier. L'extension `.csv` est ajoutée automatiquement si nécessaire (défaut `"cleaned_data"`).
-#' @param sep Caractère séparateur de colonnes (défaut `";"`).
-#' @param row.names Logique. Faut-il inclure les noms de lignes dans le fichier ? (défaut `FALSE`).
-#' @param overwrite Logique. Si `FALSE`, lève une erreur si le fichier existe déjà. Si `TRUE` (défaut), l'écrase.
-#' @param verbose Logique. Affiche un message avec le chemin complet du fichier après écriture (défaut `TRUE`).
+#' @param data The `data.frame` to export.
+#' @param path Destination folder path (default `"exports"`). The folder will be
+#'   created if it does not exist.
+#' @param filename File name. The `.csv` extension is added automatically if
+#'   necessary (default `"cleaned_data"`).
+#' @param sep Column separator character (default `";"`).
+#' @param row.names Logical. Should row names be included in the file?
+#'   (default `FALSE`).
+#' @param overwrite Logical. If `FALSE`, an error is thrown if the file already
+#'   exists. If `TRUE` (default), it is overwritten.
+#' @param verbose Logical. If `TRUE` (default), prints a message with the full
+#'   path of the written file.
 #'
-#' @return Renvoie de manière invisible (`invisible()`) le chemin complet du fichier créé.
+#' @return (Invisibly) returns the full path to the created file.
 #'
-#' @family Fonctions d'Export
+#' @family Export functions
 #' @examples
-#' # Données de test
+#' # Test data
 #' df_test <- data.frame(
 #'   id = 1:3,
-#'   nom = c("Alice", "Bob", "Charlie"),
+#'   name = c("Alice", "Bob", "Charlie"),
 #'   score = c(10.5, 15.2, 8.0)
 #' )
 #'
-#' # Création d'un dossier temporaire pour ne pas polluer votre disque
-#' tmp_folder <- tempfile() # On utilise un nom aléatoire
+#' # Create a temporary folder to avoid writing on your disk
+#' tmp_folder <- tempfile() # Use a random folder name
 #'
-#' # 1. Export simple (point-virgule par défaut)
+#' # 1. Simple export (semicolon separator by default)
 #' path_file <- export_csv(df_test, path = tmp_folder, filename = "test_export")
 #'
-#' # Vérification que le fichier existe
+#' # Check that the file exists
 #' file.exists(path_file)
 #'
-#' # 2. Export avec virgule et sans écraser (devrait générer une erreur si on relance)
+#' # 2. Export with comma separator and no overwrite (should error if rerun)
 #' try({
 #'   export_csv(df_test, path = tmp_folder, filename = "test_export", sep = ",", overwrite = FALSE)
 #' })
 #'
-#' # Nettoyage du dossier temporaire
+#' # Clean up temporary folder
 #' unlink(tmp_folder, recursive = TRUE)
 #' @export
 export_csv <- function(data,
@@ -61,13 +68,13 @@ export_csv <- function(data,
                        row.names = FALSE,
                        overwrite = TRUE,
                        verbose = TRUE) {
-  if (!is.data.frame(data)) stop("data doit être un data.frame")
+  if (!is.data.frame(data)) stop("data must be a data.frame")
   if (!dir.exists(path)) dir.create(path, recursive = TRUE)
 
   if (!grepl("\\.csv$", filename, ignore.case = TRUE)) filename <- paste0(filename, ".csv")
   filepath <- file.path(path, filename)
 
-  if (!overwrite && file.exists(filepath)) stop(sprintf("Le fichier existe déjà : %s", filepath))
+  if (!overwrite && file.exists(filepath)) stop(sprintf("File already exists: %s", filepath))
 
   if (sep == ";") {
     utils::write.csv2(data, file = filepath, row.names = row.names)
@@ -77,50 +84,52 @@ export_csv <- function(data,
     utils::write.table(data, file = filepath, sep = sep, dec = ".", row.names = row.names, col.names = TRUE, qmethod = "double")
   }
 
-  if (verbose) message(sprintf("Fichier écrit: %s", normalizePath(filepath)))
+  if (verbose) message(sprintf("File written: %s", normalizePath(filepath)))
   invisible(filepath)
 }
 
 
-#' write a cleaning report to a text file
+#' Write a cleaning report to a text file
 #'
 #' @description
-#' Crée un fichier texte résumant l'état du jeu de données après nettoyage.
-#' Il compare (optionnellement) les dimensions avant/après et inscrit les statistiques fournies.
+#' Create a text file summarising the state of the data set after cleaning.
+#' It optionally compares the dimensions before/after and records the provided statistics.
 #'
 #' @details
-#' Le rapport contient :
-#' * La date et l'heure du rapport.
-#' * Les dimensions du jeu de données final.
-#' * Le nombre de valeurs manquantes (NA) restantes par colonne.
-#' * Une section "Logs Opérationnels" affichant les compteurs fournis dans `stats_list`.
+#' The report contains:
+#' * The date and time of the report.
+#' * The dimensions of the final data set.
+#' * The number of remaining missing values (NA) per column.
+#' * A section of operational logs displaying the counters provided in `stats_list`.
 #'
-#' @param data Le `data.frame` nettoyé (final).
-#' @param original_data (Optionnel) Le `data.frame` brut (avant nettoyage) pour comparer les lignes supprimées.
-#' @param file Chemin du fichier de sortie (ex: "reports/cleaning_log.txt").
-#' @param stats_list Une liste nommée contenant des compteurs ou messages (ex: `list(outliers_capped = 12, rows_removed = 5)`).
+#' @param data The cleaned (final) `data.frame`.
+#' @param original_data (Optional) The raw `data.frame` (before cleaning) to
+#'   compare removed rows.
+#' @param file Path to the output file (e.g. `"reports/cleaning_log.txt"`).
+#' @param stats_list A named list of counters or messages
+#'   (e.g. `list(outliers_capped = 12, rows_removed = 5)`).
 #'
-#' @return Renvoie le chemin du fichier créé (invisiblement).
-#' @family Export
+#' @return Invisibly returns the path to the created file.
+#' @family Export functions
 #' @examples
-#' # Données brutes
+#' # Raw data
 #' df_raw <- data.frame(id = 1:5, val = c(10, NA, 30, 1000, 50))
 #'
-#' # Données nettoyées (fictives)
-#' df_clean <- data.frame(id = c(1,3,4,5), val = c(10, 30, 100, 50))
+#' # Cleaned data (example)
+#' df_clean <- data.frame(id = c(1, 3, 4, 5), val = c(10, 30, 100, 50))
 #'
-#' # Liste des opérations effectuées (recueillies pendant le script)
+#' # List of operations performed (collected during the script)
 #' my_stats <- list(
-#'   "NA imputés" = 1,
-#'   "Outliers plafonnés" = 1,
-#'   "Lignes supprimées" = 1
+#'   "NA imputed" = 1,
+#'   "Outliers capped" = 1,
+#'   "Rows removed" = 1
 #' )
 #'
-#' # Génération du rapport
+#' # Generate the report
 #' tmp_file <- tempfile(fileext = ".txt")
 #' write_cleaning_report(df_clean, original_data = df_raw, file = tmp_file, stats_list = my_stats)
 #'
-#' # Lecture du résultat
+#' # Read the result
 #' cat(readLines(tmp_file), sep = "\n")
 #' @export
 write_cleaning_report <- function(data,
@@ -128,57 +137,57 @@ write_cleaning_report <- function(data,
                                   file = "cleaning_report.txt",
                                   stats_list = NULL) {
 
-  if (!is.data.frame(data)) stop("data doit être un data.frame")
+  if (!is.data.frame(data)) stop("data must be a data.frame")
 
-  # Création du dossier parent si besoin
+  # Create parent directory if needed
   dir_name <- dirname(file)
   if (dir_name != "." && !dir.exists(dir_name)) dir.create(dir_name, recursive = TRUE)
 
-  # Ouverture du fichier en écriture
+  # Open file for writing
   sink(file)
   on.exit(sink())
 
-  cat("   RAPPORT  \n")
+  cat("   CLEANING REPORT  \n")
 
-  cat("Date :", format(Sys.time(), "%Y-%m-%d %H:%M:%S"), "\n\n")
+  cat("Date:", format(Sys.time(), "%Y-%m-%d %H:%M:%S"), "\n\n")
 
-  # 1. Dimensions et Comparaison
+  # 1. Dimensions and Comparison
   cat("--- DIMENSIONS ---\n")
   n_rows <- nrow(data)
   n_cols <- ncol(data)
-  cat(sprintf("Lignes finales   : %d\n", n_rows))
-  cat(sprintf("Colonnes finales : %d\n", n_cols))
+  cat(sprintf("Final rows       : %d\n", n_rows))
+  cat(sprintf("Final columns    : %d\n", n_cols))
 
   if (!is.null(original_data)) {
     n_orig <- nrow(original_data)
     diff_rows <- n_orig - n_rows
-    cat(sprintf("Lignes initiales : %d\n", n_orig))
-    cat(sprintf("Lignes supprimées: %d (%.2f%%)\n", diff_rows, (diff_rows/n_orig)*100))
+    cat(sprintf("Initial rows     : %d\n", n_orig))
+    cat(sprintf("Rows removed     : %d (%.2f%%)\n", diff_rows, (diff_rows/n_orig)*100))
   }
   cat("\n")
 
-  # 2. Vérification des NA restants
-  cat("--- VALEURS MANQUANTES (NA) RESTANTES ---\n")
+  # 2. Remaining missing values
+  cat("--- REMAINING MISSING VALUES (NA) ---\n")
   na_counts <- colSums(is.na(data))
   na_cols <- na_counts[na_counts > 0]
 
   if (length(na_cols) == 0) {
-    cat("Aucune valeur manquante (Jeu de données complet).\n")
+    cat("No missing values (complete data set).\n")
   } else {
     for (col in names(na_cols)) {
-      cat(sprintf("- %s : %d NA\n", col, na_cols[col]))
+      cat(sprintf("- %s: %d NA\n", col, na_cols[col]))
     }
   }
   cat("\n")
 
-  # 3. Logs personnalisés (Outliers, etc.)
+  # 3. Custom logs (Outliers, etc.)
   if (!is.null(stats_list) && length(stats_list) > 0) {
     for (name in names(stats_list)) {
       cat(sprintf("- %s : %s\n", name, as.character(stats_list[[name]])))
     }
     cat("\n")
   }
-  cat("Fin du rapport.\n")
+  cat("End of report.\n")
 
   invisible(normalizePath(file, mustWork = FALSE))
 }

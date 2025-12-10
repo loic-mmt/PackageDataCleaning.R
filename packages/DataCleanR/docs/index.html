@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>What the Package Does (One Line, Title Case) • DataCleanR</title>
+<title>DataCleanR: Tools for Reproducible Data Cleaning and Validation • DataCleanR</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="What the Package Does (One Line, Title Case)">
-<meta property="og:description" content="What the package does (one paragraph).">
+<script src="pkgdown.js"></script><meta property="og:title" content="DataCleanR: Tools for Reproducible Data Cleaning and Validation">
+<meta property="og:description" content="DataCleanR provides tools for reproducible cleaning and validation of tabular datasets, with functions for schema checks, normalisation, missing values handling and export.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -55,16 +55,40 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-Provides a comprehensive toolkit for cleaning and preprocessing salary datasets.
-    The package includes functions to validate data schemas, standardize column names and text formats,
-    and handle missing values using statistical imputation strategies (mean, median, mode).
+    <div class="page-header">
+      <h1>DataCleanR</h1>
+      <p class="lead">Tools for reproducible data cleaning and validation of tabular datasets.</p>
+    </div>
+
+    <p>DataCleanR provides a comprehensive toolkit for cleaning and preprocessing tabular datasets, with a focus on salary and HR-style data. It helps you validate data schemas, standardise column names and text formats, handle missing values, and prepare clean datasets ready for analysis or reporting.</p>
+
+    <h2>Key features</h2>
+    <ul>
+      <li><strong>Schema validation</strong>: check that incoming data matches the expected structure (columns, types, constraints).</li>
+      <li><strong>Normalisation</strong>: standardise column names, text formats and categorical values for consistent downstream use.</li>
+      <li><strong>Currency and amounts</strong>: clean and standardise monetary variables, including parsing, conversion and formatting.</li>
+      <li><strong>Missing values handling</strong>: identify and treat missing or inconsistent values using simple rules or imputation strategies.</li>
+      <li><strong>Data quality checks</strong>: compute basic quality indicators to quickly assess the reliability of your dataset.</li>
+      <li><strong>Validation and export</strong>: apply validation rules, flag issues and export clean datasets in a reproducible way.</li>
+    </ul>
+
+    <h2>Typical workflow</h2>
+    <p>A typical DataCleanR workflow consists of importing raw data, validating its structure, applying normalisation and cleaning steps, checking data quality and exporting a clean, well-documented dataset. The functions are designed to be combined into reproducible scripts or high-level pipelines so that the same cleaning logic can be reused on new data and across projects.</p>
+
+    <h2>Cleaning pipelines and modes</h2>
+    <p>DataCleanR supports different cleaning pipelines depending on your goal:</p>
+    <ul>
+      <li><strong>Classic cleaning</strong>: a balanced pipeline that fixes common issues (types, formats, missing values, basic quality checks) while keeping the data close to its original form, suitable for descriptive analysis and reporting.</li>
+      <li><strong>ML-ready cleaning</strong>: a stricter pipeline that enforces tighter constraints on schema, missing values and outliers to produce datasets that are easier to use directly in modelling and machine learning workflows.</li>
+      <li><strong>Custom pipelines</strong>: you can compose your own sequence of DataCleanR functions to create project-specific pipelines that reflect your business rules and quality requirements.</li>
+    </ul>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li>`use_mit_license()`, `use_gpl3_license()` or friends to pick a license</li>
+<li>This package is open-source software. See the LICENSE file in the source repository for full terms.</li>
 </ul>
 </div>
 
@@ -79,7 +103,9 @@ Provides a comprehensive toolkit for cleaning and preprocessing salary datasets.
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>First Last <br><small class="roles"> Arthur Hauguel, Loïc Mémeteau, Margot Laignel </small>   </li>
+  <li>Loïc Mémeteau <br><small class="roles">Author, maintainer</small></li>
+  <li>Arthur Hauguel <br><small class="roles">Author</small></li>
+  <li>Margot Laignel <br><small class="roles">Author</small></li>
 </ul>
 </div>
 
@@ -91,7 +117,7 @@ Provides a comprehensive toolkit for cleaning and preprocessing salary datasets.
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by First Last.</p>
+<p>Developed by Loïc Mémeteau, Arthur Hauguel, Margot Laignel.</p>
 </div>
 
 <div class="pkgdown">

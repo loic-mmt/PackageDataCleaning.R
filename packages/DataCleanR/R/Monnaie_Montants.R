@@ -1,36 +1,36 @@
-#' @title Convertir les salaires en USD
+#' @title Convert salaries to USD
 #'
 #' @description
-#' Convertit les montants des salaires locaux vers le dollar américain (USD).
-#' Cette fonction prend en compte la variation des taux de change selon l'année de travail (`work_year`).
+#' Convert local salary amounts to US dollars (USD).
+#' This function takes into account the variation of exchange rates by work year (`work_year`).
 #'
 #' @details
-#' La procédure de conversion est la suivante :
+#' The conversion procedure is as follows:
 #' \enumerate{
-#'   \item **Validation** : Vérifie la présence des colonnes `salary`, `salary_currency` et `work_year`.
-#'   \item **Typage** : Assure que le salaire est numérique et l'année est un entier.
-#'   \item **Jointure** : Fusionne les données avec la table de référence `exchange_rates_to_usd` sur la base de la devise et de l'année.
-#'   \item **Calcul** : Applique le taux de change pour mettre à jour `salary_in_usd`.
-#'   \item **Nettoyage** : Supprime les colonnes temporaires de taux (`rate`).
+#'   \item **Validation**: Checks that the columns `salary`, `salary_currency` and `work_year` are present.
+#'   \item **Typing**: Ensures that the salary is numeric and the year is an integer.
+#'   \item **Join**: Merges the data with the reference table `exchange_rates_to_usd` based on currency and year.
+#'   \item **Computation**: Applies the exchange rate to update `salary_in_usd`.
+#'   \item **Cleanup**: Removes temporary rate columns (`rate`).
 #' }
 #'
 #' @note
-#' Cette fonction dépend de l'objet global `exchange_rates_to_usd` qui doit contenir les colonnes `currency`, `year` et `rate`.
+#' This function depends on the global object `exchange_rates_to_usd`, which must contain the columns `currency`, `year` and `rate`.
 #'
-#' @param data Un `data.frame` contenant obligatoirement les colonnes :
+#' @param data A `data.frame` that must contain at least the following columns:
 #'   \itemize{
-#'     \item `salary` : Le montant brut dans la devise locale.
-#'     \item `salary_currency` : Le code ISO de la devise (ex: "EUR", "GBP").
-#'     \item `work_year` : L'année fiscale de référence.
-#'     \item `salary_in_usd` : (Optionnel, sera écrasé/créé).
+#'     \item `salary`: The gross amount in the local currency.
+#'     \item `salary_currency`: The ISO code of the currency (e.g. "EUR", "GBP").
+#'     \item `work_year`: The reference fiscal year.
+#'     \item `salary_in_usd`: (Optional, will be overwritten/created).
 #'   }
 #'
-#' @return Le `data.frame` enrichi avec la colonne `salary_in_usd` calculée.
+#' @return The `data.frame` enriched with the computed `salary_in_usd` column.
 #'
-#' @family Fonctions Monétaires
+#' @family Currency functions
 #' @examples
-#' # Pour que l'exemple fonctionne, on simule la table de taux de change
-#' # Normalement, cet objet 'exchange_rates_to_usd' est chargé dans le package
+#' # For the example to work, we simulate the exchange rate table
+#' # Normally, this object 'exchange_rates_to_usd' is loaded in the package
 #' exchange_rates_to_usd <- data.frame(
 #'   currency = c("EUR", "GBP"),
 #'   year = c(2023, 2023),
@@ -38,10 +38,10 @@
 #' )
 #'
 #' df <-  data.frame(
-#'  salary = 60000,
-#'    salary_currency = "GBP",
+#'   salary = 60000,
+#'   salary_currency = "GBP",
 #'   salary_in_usd = 75000,
-#'    work_year = 2023
+#'   work_year = 2023
 #' )
 #'
 #' # Conversion
@@ -49,7 +49,7 @@
 #' @export
 convert_currency_to_usd <- function(data) {
   if (!all(c("salary", "salary_currency", "salary_in_usd", "work_year") %in% names(data))) {
-    stop("Les colonnes 'salary', 'salary_currency', 'salary_in_usd' et 'work_year' doivent exister.")
+    stop("The columns 'salary', 'salary_currency', 'salary_in_usd' and 'work_year' must exist.")
   }
   data$salary <- as.numeric(as.character(data$salary))
   data$salary_currency <- as.character(data$salary_currency)

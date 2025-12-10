@@ -1,41 +1,42 @@
 #' Normalize a vector to a factor
-#' (use with "df$col <- normalize_to_factor(df$col, mapping, levels)")
+#' (use with `df$col <- normalize_factor(df$col, mapping, levels)`)
 #'
 #' @description
-#' Transforme un vecteur brut en facteur en appliquant une table de correspondance (mapping).
-#' Les valeurs non trouvées ou manquantes sont remplacées par `"Unknown"`.
+#' Transform a raw vector into a factor by applying a mapping table.
+#' Values that are not found or are missing are replaced by `"Unknown"`.
 #'
 #' @details
-#' Cette fonction est utile pour standardiser des colonnes catégorielles mal formatées.
-#' Elle effectue les opérations suivantes :
+#' This function is useful to standardise poorly formatted categorical columns.
+#' It performs the following operations:
 #' \enumerate{
-#'   \item Remplace les valeurs du vecteur selon le `mapping` fourni.
-#'   \item Remplace les `NA` par la chaîne `"Unknown"`.
-#'   \item Convertit le résultat en `factor` avec les niveaux (`levels`) imposés.
+#'   \item Replace the values of the vector according to the supplied `mapping`.
+#'   \item Replace `NA` values with the string `"Unknown"`.
+#'   \item Convert the result to a `factor` with the imposed levels (`levels_in_factor`).
 #' }
 #'
-#' @param vector Le vecteur brut à normaliser.
-#' @param mapping Un vecteur nommé (clé-valeur) indiquant la transformation (ex: `c("old_val" = "new_val")`).
-#' @param levels_in_factor Un vecteur contenant tous les niveaux valides pour le facteur final.
-#' @param ordered_factor Logique (défaut `FALSE`). Si `TRUE`, crée un facteur ordonné.
+#' @param vector The raw vector to normalise.
+#' @param mapping A named vector (key-value) indicating the transformation
+#'   (e.g. `c("old_val" = "new_val")`).
+#' @param levels_in_factor A vector containing all valid levels for the final factor.
+#' @param ordered_factor Logical (default `FALSE`). If `TRUE`, creates an ordered factor.
 #'
-#' @return Un vecteur de type `factor` normalisé.
+#' @return A normalised `factor` vector.
 #'
-#' @family Fonctions de Normalisation
+#' @family Normalization functions
 #' @examples
 #' raw_data <- c("FR", "US", "UK", "FR", "XX")
 #'
-#' # Table de correspondance
+#' # Mapping table
 #' map_countries <- c(
 #'   "FR" = "France",
 #'   "US" = "United States",
 #'   "UK" = "United Kingdom"
 #' )
 #'
-#' # Niveaux autorisés
+#' # Allowed levels
 #' valid_levels <- c("France", "United States", "United Kingdom", "Unknown")
 #'
-#' # Application
+#' # Apply normalisation
 #' normalize_factor(raw_data, map_countries, valid_levels)
 #' @export
 normalize_factor <- function(vector, mapping, levels_in_factor, ordered_factor = FALSE) {
@@ -45,47 +46,48 @@ normalize_factor <- function(vector, mapping, levels_in_factor, ordered_factor =
   return(normalized)
 }
 
-#' Normaliser la colonne 'remote_ratio'
+#' Normalise the `remote_ratio` column
 #'
 #' @description
-#' Nettoie et standardise la colonne `remote_ratio` d'un data.frame.
-#' Assure que les valeurs sont numériques et comprises entre 0 et 100.
+#' Clean and standardise the `remote_ratio` column of a data.frame.
+#' Ensures that values are numeric and between 0 and 100.
 #'
 #' @details
-#' Le traitement inclut :
+#' The processing includes:
 #' \itemize{
-#'   \item Conversion en numérique (les erreurs deviennent `NA`).
-#'   \item Bornage des valeurs (`pmin`/`pmax`) : tout ce qui est < 0 devient 0, tout ce qui est > 100 devient 100.
-#'   \item (Optionnel) Binarisation : Si `binary=TRUE`, les valeurs deviennent soit 0 soit 100 selon le `threshold`.
+#'   \item Conversion to numeric (conversion errors become `NA`).
+#'   \item Bounding values (`pmin`/`pmax`): anything < 0 becomes 0, anything > 100 becomes 100.
+#'   \item (Optional) Binarisation: If `binary = TRUE`, values become either 0 or 100
+#'         according to the `threshold`.
 #' }
 #'
-#' @param data Le data.frame contenant la colonne `remote_ratio`.
-#' @param binary Logique (défaut `FALSE`). Active le mode binaire (0 ou 100 uniquement).
-#' @param threshold Numérique (défaut 50). Seuil pour la binarisation.
+#' @param data The data.frame containing the `remote_ratio` column.
+#' @param binary Logical (default `FALSE`). Activates binary mode (only 0 or 100).
+#' @param threshold Numeric (default 50). Threshold for binarisation.
 #'   \itemize{
-#'     \item Si valeur >= threshold : devient 100.
-#'     \item Si valeur < threshold : devient 0.
+#'     \item If value >= `threshold`: becomes 100.
+#'     \item If value < `threshold`: becomes 0.
 #'   }
 #'
-#' @return Le `data.frame` avec la colonne `remote_ratio` corrigée.
+#' @return The `data.frame` with the corrected `remote_ratio` column.
 #'
-#' @family Fonctions de Normalisation
+#' @family Normalization functions
 #' @examples
 #' df <- data.frame(remote_ratio = c("0", "100", "50", "30", "-5", "abc"))
 #'
-#' # Normalisation standard (numérique + bornage 0-100)
+#' # Standard normalisation (numeric + bounding 0-100)
 #' normalize_remote_ratio(df)
 #'
-#' # Normalisation binaire (Tout ce qui est >= 50 devient 100, le reste 0)
+#' # Binary normalisation (everything >= 50 becomes 100, the rest 0)
 #' normalize_remote_ratio(df, binary = TRUE, threshold = 50)
 #' @export
 normalize_remote_ratio <- function(data, binary = FALSE, threshold = 50) {
   if (!"remote_ratio" %in% names(data)) {
-    stop("La colonne 'remote_ratio' n'existe pas dans le dataframe.")
+    stop("The 'remote_ratio' column does not exist in the data frame.")
   }
-  # convert en numeric (les non-convertibles donneront NA)
+  # convert to numeric (non-convertible will be NA)
   data$remote_ratio <- suppressWarnings(as.numeric(as.character(data$remote_ratio)))
-  # bornes
+  # bounds
   data$remote_ratio <- pmin(pmax(data$remote_ratio, 0), 100)
   if (binary) {
     data$remote_ratio <- ifelse(is.na(data$remote_ratio), NA, ifelse(data$remote_ratio >= threshold, 100, 0))
@@ -94,38 +96,38 @@ normalize_remote_ratio <- function(data, binary = FALSE, threshold = 50) {
 }
 
 
-#' Normalize everything of an salary_tbl
+#' Normalise all columns of a salary table
 #'
 #' @description
-#' Fonction "wrapper" (orchestrateur) qui applique séquentiellement toutes les règles de normalisation
-#' spécifiques au jeu de données des salaires (`salary_tbl`).
+#' Wrapper (orchestrator) function that sequentially applies all normalisation rules
+#' specific to the salary dataset (`salary_tbl`).
 #'
 #' @details
-#' Cette fonction transforme les colonnes suivantes :
+#' This function transforms the following columns:
 #' \itemize{
-#'   \item **Localisation** (`company_location`, `employee_residence`) : Normalisation ISO2 et création de groupements régionaux.
-#'   \item **Poste** (`job_title`) : Standardisation des intitulés.
-#'   \item **Télétravail** (`remote_ratio`) : Nettoyage numérique.
-#'   \item **Taille** (`company_size`) : Conversion en facteur ordonné.
-#'   \item **Type d'emploi** (`employment_type`) : Standardisation.
-#'   \item **Expérience** (`experience_level`) : Conversion en facteur ordonné.
+#'   \item **Location** (`company_location`, `employee_residence`): ISO2 normalisation and creation of regional groupings.
+#'   \item **Job title** (`job_title`): Standardisation of job titles.
+#'   \item **Remote work** (`remote_ratio`): Numeric cleaning of the remote work ratio.
+#'   \item **Company size** (`company_size`): Conversion to an ordered factor.
+#'   \item **Employment type** (`employment_type`): Standardisation.
+#'   \item **Experience** (`experience_level`): Conversion to an ordered factor.
 #' }
 #'
 #' @note
-#' Cette fonction dépend de variables globales de mapping (ex: `mapping_total`, `levels_iso2`, `size_mapping`, etc.)
-#' qui doivent être chargées dans l'environnement avant exécution.
+#' This function depends on global mapping variables (e.g. `mapping_total`, `levels_iso2`,
+#' `size_mapping`, etc.) that must be loaded in the environment before execution.
 #'
-#' @param data Le data.frame (`salary_tbl`) à normaliser.
+#' @param data The data.frame (`salary_tbl`) to normalise.
 #'
-#' @return Le `data.frame` entièrement normalisé prêt pour l'analyse.
+#' @return The fully normalised `data.frame`, ready for analysis.
 #'
-#' @family Fonctions de Normalisation
+#' @family Normalization functions
 #' @seealso \code{\link{normalize_factor}}, \code{\link{normalize_remote_ratio}}
 #' @examples
 #' \dontrun{
-#' # Cet exemple ne tourne pas automatiquement car il nécessite
-#' # que les objets de mapping (mapping_total, levels_iso2, etc.)
-#' # soient présents dans l'environnement global.
+#' # This example does not run automatically because it requires
+#' # the mapping objects (mapping_total, levels_iso2, etc.)
+#' # to be present in the global environment.
 #'
 #' df_clean <- normalize_all(salary_tbl_raw)
 #' }
@@ -155,5 +157,4 @@ normalize_all <- function(data) {
   data$experience_level <- normalize_factor(data$experience_level, experience_mapping, experience_labels_ordered, TRUE)
   return(data)
 }
-
 

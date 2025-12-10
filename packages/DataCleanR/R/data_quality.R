@@ -1,39 +1,39 @@
-#' @title Valider les plages de valeurs
+#' @title Validate value ranges
 #'
 #' @description
-#' Vérifie que les données respectent les règles métier et **supprime** les lignes invalides.
-#' Les règles incluent : salaire strictement positif, ratio de télétravail entre 0 et 100, et année de travail plausible.
+#' Check that the data respect basic business rules and **remove** invalid rows.
+#' The rules include: strictly positive salary, remote work ratio between 0 and 100, and a plausible work year.
 #'
 #' @details
-#' Cette fonction applique un filtre strict. Une ligne est conservée uniquement si toutes les conditions suivantes sont vraies :
+#' This function applies a strict filter. A row is kept only if all of the following conditions are TRUE:
 #' \itemize{
 #'   \item `salary` > 0
-#'   \item `remote_ratio` est compris entre 0 et 100 inclus.
-#'   \item `work_year` est compris entre `min_year` et `max_year`.
-#'   \item Aucune de ces valeurs n'est `NA`.
+#'   \item `remote_ratio` is between 0 and 100 inclusive
+#'   \item `work_year` is between `min_year` and `max_year`
+#'   \item none of these values is `NA`
 #' }
-#' Un message est affiché dans la console si des lignes sont supprimées.
+#' A message is printed to the console if some rows are removed.
 #'
-#' @param data Le `data.frame` contenant les colonnes `salary`, `remote_ratio` et `work_year`.
-#' @param min_year Entier. Année minimale acceptable (défaut 2000).
-#' @param max_year Entier. Année maximale acceptable (défaut : année courante système).
+#' @param data A `data.frame` containing the `salary`, `remote_ratio` and `work_year` columns.
+#' @param min_year Integer. Minimum acceptable year (default 2000).
+#' @param max_year Integer. Maximum acceptable year (default: current system year).
 #'
-#' @return Un `data.frame` filtré (le nombre de lignes peut être inférieur à l'original).
+#' @return A filtered `data.frame` (the number of rows may be lower than the original).
 #'
-#' @family Qualité des Données
+#' @family Data quality
 #' @examples
-#' # Données avec une ligne invalide (salary négatif et remote_ratio > 100)
+#' # Data with an invalid row (negative salary and remote_ratio > 100)
 #' df <- data.frame(
 #'   salary = c(50000, -100, 60000),
 #'   remote_ratio = c(50, 150, 100),
 #'   work_year = c(2022, 2022, 2023)
 #' )
 #'
-#' # Application du filtre
+#' # Apply the filter
 #' df_clean <- validate_ranges(df)
 #'
-#' # Résultat : ne garde que les lignes valides
-#' nrow(df_clean) # Devrait être 2
+#' # Result: only valid rows are kept
+#' nrow(df_clean) # Should be 2
 #' @export
 
 validate_ranges <- function(data, min_year = 2000, max_year = as.integer(format(Sys.Date(), "%Y"))) {
@@ -73,34 +73,37 @@ validate_ranges <- function(data, min_year = 2000, max_year = as.integer(format(
 #' Cap salary outliers (quantile)
 #'
 #' @description
-#' Traite les valeurs extrêmes (outliers) d'une colonne numérique en les remplaçant par les valeurs des quantiles limites.
-#' C'est une technique de "Winsorisation".
+#' Handle extreme values (outliers) in a numeric column by replacing them with
+#' specified quantile cut-offs. This is a simple "winsorisation" strategy.
 #'
 #' @details
-#' La fonction calcule deux bornes, L (Lower) et U (Upper), correspondant aux probabilités demandées.
-#' Les valeurs inférieures à L sont remplacées par L, et les valeurs supérieures à U sont remplacées par U.
+#' The function computes two bounds, L (lower) and U (upper), corresponding to the
+#' requested quantile probabilities. Values below L are replaced by L, and values
+#' above U are replaced by U. You can choose whether to cap both tails, only the
+#' upper tail, or only the lower tail.
 #'
-#' @param data Le `data.frame` contenant les données.
-#' @param col Chaîne de caractères. Nom de la colonne à traiter (défaut "salary_in_usd").
-#' @param lower Probabilité pour le quantile bas (0 à 1, défaut 0.01).
-#' @param upper Probabilité pour le quantile haut (0 à 1, défaut 0.99).
-#' @param clip_side Stratégie de plafonnement : "both" (défaut), "upper" ou "lower".
-#' @param na_rm Logique. Ignorer les `NA` lors du calcul des quantiles (défaut TRUE).
-#' @param verbose Logique. Affiche un résumé des remplacements effectués.
+#' @param data A `data.frame` containing the data.
+#' @param col Character string. Name of the column to process (default "salary_in_usd").
+#' @param lower Probability for the lower quantile (between 0 and 1, default 0.01).
+#' @param upper Probability for the upper quantile (between 0 and 1, default 0.99).
+#' @param clip_side Capping strategy: "both" (default), "upper" or "lower".
+#' @param na_rm Logical. Should `NA` values be ignored when computing quantiles? (default TRUE)
+#' @param verbose Logical. If TRUE, prints a summary of the replacements performed.
 #'
-#' @return Le `data.frame` avec la colonne cible modifiée (les valeurs extrêmes sont "écrasées").
+#' @return The `data.frame` with the target column modified (extreme values are
+#'   replaced by the corresponding quantile bounds).
 #'
-#' @family Qualité des Données
+#' @family Data quality
 #' @examples
-#' # Jeu de données avec un salaire extrême (1 million)
+#' # Simple data with an extreme salary value (1 million)
 #' df <- data.frame(
 #'   salary_in_usd = c(50000, 55000, 60000, 45000, 1000000)
 #' )
 #'
-#' # On plafonne les 10% supérieurs (Winsorisation)
+#' # Cap the upper 10% (winsorisation)
 #' df_capped <- cap_outliers_salary(df, lower = 0.1, upper = 0.9, clip_side = "upper")
 #'
-#' # La valeur 1,000,000 a été remplacée par le 90ème percentile
+#' # The value 1,000,000 is replaced by the 90th percentile
 #' print(df_capped)
 #' @export
 cap_outliers_salary <- function(data,
