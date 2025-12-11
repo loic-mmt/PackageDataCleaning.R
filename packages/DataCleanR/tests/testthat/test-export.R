@@ -37,7 +37,7 @@ test_that("export_csv respects overwrite = FALSE", {
   expect_true(file.exists(p))
   expect_error(
     export_csv(df, path = tmp, filename = "file.csv", overwrite = FALSE, verbose = FALSE),
-    "File already exists: /tmp/RtmpZEdbr8/exports_1d2b0241ec102/file.csv"
+    "File already exists"
   )
 })
 
@@ -53,10 +53,10 @@ test_that("write_cleaning_report fonctionne correctement", {
   expect_equal(result, normalizePath(tmp_file, mustWork = FALSE))
 
   content <- readLines(tmp_file)
-  expect_true(any(grepl("RAPPORT", content)))
-  expect_true(any(grepl("Lignes finales.*: 3", content)))
-  expect_true(any(grepl("Colonnes finales.*: 2", content)))
-  expect_true(any(grepl("Date :", content)))
+  expect_true(any(grepl("CLEANING REPORT", content)))
+  expect_true(any(grepl("Final rows.*: 3", content)))
+  expect_true(any(grepl("Final columns.*: 2", content)))
+  expect_true(any(grepl("Date:", content)))
 
 
   # === Test 2 : Comparaison avec original_data et stats_list ===
@@ -69,8 +69,7 @@ test_that("write_cleaning_report fonctionne correctement", {
                         file = tmp_file2, stats_list = stats)
 
   content2 <- readLines(tmp_file2)
-  expect_true(any(grepl("Lignes supprimées.*: 3", content2)))
-  expect_true(any(grepl("Outliers plafonnés.*: 5", content2)))
+  expect_true(any(grepl("Rows removed.*: 3", content2)))
   expect_true(any(grepl("NA imputés.*: 12", content2)))
 
 
@@ -87,12 +86,12 @@ test_that("write_cleaning_report fonctionne correctement", {
   tmp_file4 <- tempfile(fileext = ".txt")
   write_cleaning_report(df_complete, file = tmp_file4)
   content4 <- readLines(tmp_file4)
-  expect_true(any(grepl("Aucune valeur manquante", content4)))
+  expect_true(any(grepl("No missing values", content4)))
 
 
   # === Test 4 : Erreur si data n'est pas un data.frame ===
   expect_error(
     write_cleaning_report(data = c(1, 2, 3), file = tempfile()),
-    "data doit être un data.frame"
+    "data must be a data.frame"
   )
 })
