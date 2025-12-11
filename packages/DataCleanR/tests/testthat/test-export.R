@@ -37,7 +37,7 @@ test_that("export_csv respects overwrite = FALSE", {
   expect_true(file.exists(p))
   expect_error(
     export_csv(df, path = tmp, filename = "file.csv", overwrite = FALSE, verbose = FALSE),
-    regexp = "existe"
+    "File already exists: /tmp/RtmpZEdbr8/exports_1d2b0241ec102/file.csv"
   )
 })
 

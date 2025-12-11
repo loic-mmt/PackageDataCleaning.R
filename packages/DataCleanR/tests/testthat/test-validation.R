@@ -13,7 +13,7 @@ test_that("validate_schema", {
   names_to_test2 <- c("a", "b", "c")
   test1 <- validate_schema(df, names_to_test1)
   test2 <- validate_schema(df, names_to_test2)
-  expect_equal(list(test1, test2), list("All required columns are present in the dataframe", "The dataframe in not complete and it's missing c"))
+  expect_equal(list(test1, test2), list("All required columns are present in the data frame.", "The data frame is not complete; it is missing the following columns: c"))
 })
 
 test_that("standardize_colnames", {
@@ -62,4 +62,25 @@ test_that("deduplicate_rows", {
   expect_equal(nrow(out), 3)
   expect_equal(attr(out, "n_removed"), 2)
   expect_equal(out, df[c(1, 3, 5), ], ignore_attr = TRUE)
+})
+
+test_that ("clean_data_pipeline work well", {
+  data_for_import <- data.frame(
+    Numeric_Col = c("1.5", "1.5", "3.1"),
+    Int_Col = c("1", "1", "3"),
+    factor_col = c("A", "A", "A"),
+    char_col = c("Alice", "Bob", "Charlie"),
+    stringsAsFactors = FALSE
+  )
+  tmp <- tempfile(fileext = ".csv")
+  write.csv2(data_for_import, tmp, row.names = FALSE)
+  data_cleaned <- clean_data_pipeline(tmp, c("Numeric_Col", "Int_Col", "char_col"), keys = c("numeric_col", "int_col", "factor_col"))
+  data_expected <- data.frame(
+    numeric_col = c(1.5,3.1),
+    int_col = c(1,3),
+    factor_col = as.factor(c("A","A")),
+    char_col = as.factor(c("Alice", "Bob","Charlie"))[-2]
+  )
+  expect_equal(data_cleaned, data_expected, ignore_attr = TRUE)
+  expect_equal(attr(data_cleaned, "n_removed"), 1)
 })

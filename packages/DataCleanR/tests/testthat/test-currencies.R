@@ -95,7 +95,7 @@ test_that("convert_currency_to_usd lève une erreur si colonnes manquantes", {
   )
   expect_error(
     convert_currency_to_usd(test_data_incomplete),
-    "Les colonnes 'salary', 'salary_currency', 'salary_in_usd' et 'work_year' doivent exister."
+    "The columns 'salary', 'salary_currency', 'salary_in_usd' and 'work_year' must exist."
   )
 })
 

@@ -275,3 +275,49 @@ deduplicate_rows <- function(data, keys = NULL, keep = c("first", "last")) {
   attr(out, "n_removed") <- sum(dup)
   return(out)
 }
+
+
+#' Complete data validation pipeline
+#'
+#' @description
+#' A pipeline function that orchestrates the entire data validation process.
+#' It reads the file, validates the raw schema, standardizes column names,
+#' enforces types, and deduplicates rows.
+#'
+#' @param file_path A character string indicating the path to the CSV file.
+#' @param required_columns A character vector of column names expected in the
+#' raw input file (before standardization).
+#' @param num_threshold Proportion.
+#' @param max_factor_levels Integer.
+#' @param dedupe_keys Character vector or NULL.
+#' @param dedupe_keep Character string ("first" or "last").
+#'
+#' @return A clean, typed, and deduplicated DataFrame.
+#' @export
+clean_data_pipeline <- function(file_path,required_columns, num_threshold = 0.9, 
+                                max_factor_levels = 20, keys = NULL,
+                                keep = "first") {
+
+  # 1. Read Data
+  df <- read_raw_csv(file_path)
+
+  # 2. Validate Schema
+  is_valid <- validate_schema(df, required_columns, boolean_form = TRUE)
+  if (!is_valid) {
+    error_msg <- validate_schema(df, required_columns, boolean_form = FALSE)
+    stop(error_msg)
+  }
+
+  # 3. Standardize Column Names
+  names(df) <- standardize_colnames(names(df))
+
+  # 4. Enforce Types
+  df <- enforce_types(df,
+                      num_threshold = num_threshold,
+                      max_factor_levels = max_factor_levels)
+
+  # 5. Deduplicate
+  df <- deduplicate_rows(df, keys = keys, keep = keep)
+
+  return(df)
+}
