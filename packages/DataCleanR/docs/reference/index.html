@@ -38,7 +38,7 @@
     </div>
 
     <table class="ref-index"><colgroup><col class="alias"><col class="title"></colgroup><tbody><tr><th colspan="2">
-          <h2 id="all-functions">All functions <a href="#all-functions" class="anchor" aria-hidden="true"></a></h2>
+          <h2 id="data_quality-r">data_quality.R <a href="#data_quality-r" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p>
         </th>
       </tr></tbody><tbody><tr><td>
@@ -46,30 +46,74 @@
         </td>
         <td><p>Cap salary outliers (quantile)</p></td>
       </tr><tr><td>
+          <p><code><a href="validate_ranges.html">validate_ranges()</a></code> </p>
+        </td>
+        <td><p>Validate value ranges</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="currencies-r">currencies.R <a href="#currencies-r" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr></tbody><tbody><tr><td>
           <p><code><a href="convert_currency_to_usd.html">convert_currency_to_usd()</a></code> </p>
         </td>
         <td><p>Convert salaries to USD</p></td>
-      </tr><tr><td>
-          <p><code><a href="deduplicate_rows.html">deduplicate_rows()</a></code> </p>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="validation-r">validation.R <a href="#validation-r" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="read_raw_csv.html">read_raw_csv()</a></code> </p>
         </td>
-        <td><p>Remove duplicate rows</p></td>
+        <td><p>Read a raw CSV file</p></td>
+      </tr><tr><td>
+          <p><code><a href="validate_schema.html">validate_schema()</a></code> </p>
+        </td>
+        <td><p>Validate presence of required columns</p></td>
+      </tr><tr><td>
+          <p><code><a href="standardize_colnames.html">standardize_colnames()</a></code> </p>
+        </td>
+        <td><p>Standardise column names</p></td>
       </tr><tr><td>
           <p><code><a href="enforce_types.html">enforce_types()</a></code> </p>
         </td>
         <td><p>Enforce simple column types</p></td>
       </tr><tr><td>
+          <p><code><a href="deduplicate_rows.html">deduplicate_rows()</a></code> </p>
+        </td>
+        <td><p>Remove duplicate rows</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="na_values-r">NA_values.R <a href="#na_values-r" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="impute_missing.html">impute_missing()</a></code> </p>
+        </td>
+        <td><p>Impute missing values for numeric and categorical columns</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="export-r">export.R <a href="#export-r" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr></tbody><tbody><tr><td>
           <p><code><a href="export_csv.html">export_csv()</a></code> </p>
         </td>
         <td><p>Export data to CSV</p></td>
       </tr><tr><td>
+          <p><code><a href="write_cleaning_report.html">write_cleaning_report()</a></code> </p>
+        </td>
+        <td><p>Write a cleaning report to a text file</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="orchestration-r">orchestration.R <a href="#orchestration-r" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr></tbody><tbody><tr><td>
           <p><code><a href="finalize_salary_tbl.html">finalize_salary_tbl()</a></code> </p>
         </td>
         <td><p>Create a salary table object</p></td>
-      </tr><tr><td>
-          <p><code><a href="impute_missing.html">impute_missing()</a></code> </p>
-        </td>
-        <td><p>Impute missing values for numeric and categorical columns</p></td>
-      </tr><tr><td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="normalisation-r">normalisation.R <a href="#normalisation-r" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr></tbody><tbody><tr><td>
           <p><code><a href="normalize_all.html">normalize_all()</a></code> </p>
         </td>
         <td><p>Normalise all columns of a salary table</p></td>
@@ -81,26 +125,6 @@
           <p><code><a href="normalize_remote_ratio.html">normalize_remote_ratio()</a></code> </p>
         </td>
         <td><p>Normalise the `remote_ratio` column</p></td>
-      </tr><tr><td>
-          <p><code><a href="read_raw_csv.html">read_raw_csv()</a></code> </p>
-        </td>
-        <td><p>Read a raw CSV file</p></td>
-      </tr><tr><td>
-          <p><code><a href="standardize_colnames.html">standardize_colnames()</a></code> </p>
-        </td>
-        <td><p>Standardise column names</p></td>
-      </tr><tr><td>
-          <p><code><a href="validate_ranges.html">validate_ranges()</a></code> </p>
-        </td>
-        <td><p>Validate value ranges</p></td>
-      </tr><tr><td>
-          <p><code><a href="validate_schema.html">validate_schema()</a></code> </p>
-        </td>
-        <td><p>Validate presence of required columns</p></td>
-      </tr><tr><td>
-          <p><code><a href="write_cleaning_report.html">write_cleaning_report()</a></code> </p>
-        </td>
-        <td><p>Write a cleaning report to a text file</p></td>
       </tr></tbody></table></div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -125,4 +149,3 @@
 
 
   </body></html>
-
