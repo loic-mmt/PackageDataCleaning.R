@@ -43,7 +43,6 @@ test_that("export_csv respects overwrite = FALSE", {
 
 test_that("write_cleaning_report fonctionne correctement", {
 
-  # === Test 1 : Création du rapport et structure de base ===
   df <- data.frame(x = 1:3, y = c("a", "b", "c"))
   tmp_file <- tempfile(fileext = ".txt")
 
@@ -59,7 +58,6 @@ test_that("write_cleaning_report fonctionne correctement", {
   expect_true(any(grepl("Date:", content)))
 
 
-  # === Test 2 : Comparaison avec original_data et stats_list ===
   df_original <- data.frame(x = 1:10, y = letters[1:10])
   df_clean <- data.frame(x = 1:7, y = letters[1:7])
   tmp_file2 <- tempfile(fileext = ".txt")
@@ -73,7 +71,6 @@ test_that("write_cleaning_report fonctionne correctement", {
   expect_true(any(grepl("NA imputés.*: 12", content2)))
 
 
-  # === Test 3 : Détection des valeurs manquantes ===
   df_na <- data.frame(col1 = c(1, NA, 3), col2 = c(1, 2, 3))
   tmp_file3 <- tempfile(fileext = ".txt")
 
@@ -88,8 +85,6 @@ test_that("write_cleaning_report fonctionne correctement", {
   content4 <- readLines(tmp_file4)
   expect_true(any(grepl("No missing values", content4)))
 
-
-  # === Test 4 : Erreur si data n'est pas un data.frame ===
   expect_error(
     write_cleaning_report(data = c(1, 2, 3), file = tempfile()),
     "data must be a data.frame"
