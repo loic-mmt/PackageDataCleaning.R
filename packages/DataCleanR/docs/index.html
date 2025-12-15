@@ -46,7 +46,45 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9">
-Helpers and orchestrated pipelines to validate schemas, standardise column names, enforce types, deduplicate rows, impute missing values, winsorise salary outliers, normalise categorical values, convert currencies to USD, and export cleaned salary data with optional reports.
+<div class="section level1">
+<h1>DataCleanR en bref</h1>
+<p>Des fonctions simples et des pipelines prêts à l’emploi pour valider les schémas, standardiser les colonnes, normaliser les valeurs métier, traiter les NA et outliers salariaux, convertir en USD et exporter vos données nettoyées.</p>
+</div>
+<div class="section level1">
+<h1>Installation</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="sc">::</span>install_git(<span class="st">"https://github.com/loic-mmt/DataCleanR.git"</span>)</code></pre></div>
+</div>
+<div class="section level1">
+<h1>Usage rapide</h1>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r">library(DataCleanR)
+
+clean <span class="ot">&lt;-</span> pipeline_ml_ready(
+  data <span class="ot">=</span> <span class="st">"data/salaries.csv"</span>,
+  required_columns <span class="ot">=</span> c(<span class="st">"work_year"</span>, <span class="st">"salary"</span>, <span class="st">"salary_currency"</span>,
+                        <span class="st">"job_title"</span>, <span class="st">"employee_residence"</span>,
+                        <span class="st">"company_location"</span>, <span class="st">"company_size"</span>,
+                        <span class="st">"experience_level"</span>, <span class="st">"remote_ratio"</span>),
+  finalize <span class="ot">=</span> TRUE
+)
+
+export_pipeline(
+  in_path <span class="ot">=</span> <span class="st">"data/salaries.csv"</span>,
+  out_path <span class="ot">=</span> <span class="st">"data/salaries_clean.csv"</span>,
+  report_path <span class="ot">=</span> <span class="st">"data/cleaning_report.txt"</span>,
+  mode <span class="ot">=</span> <span class="st">"ml_ready"</span>
+)</code></pre></div>
+</div>
+<div class="section level1">
+<h1>Fonctionnalités clés</h1>
+<ul>
+<li>Validation : <code>read_raw_csv()</code>, <code>validate_schema()</code>, <code>validate_ranges()</code>, <code>standardize_colnames()</code>, <code>enforce_types()</code>, <code>deduplicate_rows()</code>.</li>
+<li>Normalisation : <code>normalize_all()</code> (pays, taille d’entreprise, emploi, télétravail) + vecteurs <code>mapping_*</code>.</li>
+<li>Qualité : <code>cap_outliers_salary()</code> pour limiter les extrêmes salariaux.</li>
+<li>NA : <code>impute_missing()</code> (numérique/catégoriel).</li>
+<li>Devises : <code>convert_currency_to_usd()</code> basé sur <code>exchange_rates_to_usd</code>.</li>
+<li>Pipelines : de <code>pipeline_minimal()</code> à <code>pipeline_ml_ready()</code> et <code>export_pipeline()</code>.</li>
+</ul>
+</div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
