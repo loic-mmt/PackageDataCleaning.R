@@ -1,0 +1,71 @@
+url: https://loic-mmt.github.io/DataCleanR/dev/
+
+template:
+  bootstrap: 5
+  bootswatch: minty
+
+reference:
+  - title: "Validation"
+    desc: "Vérifier et standardiser les données en entrée."
+    contents:
+      - read_raw_csv
+      - validate_schema
+      - validate_ranges
+      - standardize_colnames
+      - enforce_types
+      - deduplicate_rows
+      - clean_data_pipeline
+
+  - title: "Normalisation"
+    desc: "Standardisation des colonnes et formats métier."
+    contents:
+      - normalize_all
+      - normalize_factor
+      - normalize_remote_ratio
+      - finalize_salary_tbl
+
+  - title: "Valeurs manquantes"
+    desc: "Imputation contrôlée des NA."
+    contents:
+      - impute_missing
+
+  - title: "Devises"
+    desc: "Conversion et tables de change."
+    contents:
+      - convert_currency_to_usd
+      - currencies_levels
+      - exchange_rates_to_usd
+
+  - title: "Qualité des données"
+    desc: "Détection d'outliers et règles métier."
+    contents:
+      - cap_outliers_salary
+
+  - title: "Export"
+    desc: "Export des données nettoyées et rapports."
+    contents:
+      - export_csv
+      - write_cleaning_report
+      - export_pipeline
+
+  - title: "Pipelines"
+    desc: "Orchestration des étapes de nettoyage."
+    contents:
+      - pipeline_minimal
+      - pipeline_light_clean
+      - pipeline_strict_clean
+      - pipeline_ml_ready
+      - pipeline_currency_focus
+      - pipeline_no_impute
+      - pipeline_legacy_clean
+      - pipeline
+
+  - title: "Tables de correspondance"
+    desc: "Vecteurs et tables de référence utilisés pour la normalisation."
+    contents:
+      - mapping_job_title
+      - mapping_employement_type
+      - region_map
+      - size_mapping
+      - experience_mapping
+      - currencies_levels

@@ -1,21 +1,34 @@
 
+#' Job title mappings
+#'
+#' Reference vectors used to normalise raw job titles into a limited set of
+#' harmonised categories.
+#'
+#' @format Character vectors:
+#' \itemize{
+#'   \item `levels_job_title`: the target categories.
+#'   \item `mapping_job_title`: a named vector mapping raw titles to
+#'     `levels_job_title`.
+#' }
+#' @rdname mapping_job_title
 #' @export
 levels_job_title <- c(
-    "Analyst",
-    "Data Engineer",
-    "Data Scientist",
-    "ML Engineer",
-    "Research",
-    "Architecture",
-    "Management",
-    "Consulting",
-    "BI Developer",
-    "AI Developer",
-    "Senior",
-    "Specialist",
-    "Operations"
-  )
+  "Analyst",
+  "Data Engineer",
+  "Data Scientist",
+  "ML Engineer",
+  "Research",
+  "Architecture",
+  "Management",
+  "Consulting",
+  "BI Developer",
+  "AI Developer",
+  "Senior",
+  "Specialist",
+  "Operations"
+)
 
+#' @rdname mapping_job_title
 #' @export
 mapping_job_title <- c(
   # Data Analysis & BI
@@ -136,18 +149,40 @@ mapping_job_title <- c(
   "Data Operations Engineer" = "Operations"
 )
 
-#'@export
+#' Employment type mappings
+#'
+#' Normalised employment types and their codes.
+#'
+#' @format Named character vector (`mapping_employement_type`) and character
+#' vector of possible levels (`levels_employement_type`).
+#' @rdname mapping_employement_type
+#' @export
 mapping_employement_type <- c(
-    "FT" = "Full-time",
-    "PT" = "Part-time",
-    "CT" = "Contract",
-    "FL" = "Freelance"
-  )
+  "FT" = "Full-time",
+  "PT" = "Part-time",
+  "CT" = "Contract",
+  "FL" = "Freelance"
+)
 
-#'@export
+#' @rdname mapping_employement_type
+#' @export
 levels_employement_type <- c("Full-time", "Part-time", "Contract", "Freelance", "Unknown")
 
-#'@export
+#' Location mappings
+#'
+#' ISO-2 country mappings, regions and normalised lookup tables used for
+#' location cleaning.
+#'
+#' @format Character vectors and named vectors:
+#' \itemize{
+#'   \item `region_map`: map ISO-2 codes to broad regions.
+#'   \item `regions_levels`: ordered list of region labels.
+#'   \item `levels_iso2`: ISO-2 codes expected by the package.
+#'   \item `mapping_total`: mapping of ISO-2 codes to themselves (used for
+#'     `normalize_factor()`).
+#' }
+#' @rdname mapping_locations
+#' @export
 region_map <- c(
       "AL"="Europe","AM"="Asia","AT"="Europe","BA"="Europe",
       "BE"="Europe","BG"="Europe","BY"="Europe","CH"="Europe",
@@ -181,10 +216,12 @@ region_map <- c(
       "UZ"="Asia","NZ"="Oceania","AU"="Oceania", "KP"="Asia", "TW"="Asia", "CV"="Africa"
     )
 
-#'@export
+#' @rdname mapping_locations
+#' @export
 regions_levels <- c("South America", "Europe", "Asia", "North America", "Africa", "Oceania")
 
-#'@export
+#' @rdname mapping_locations
+#' @export
 levels_iso2 <- c(
 
     "AL","AM","AT","BA","BE","BG","BY","CH","CY","CZ","DE","DK","EE",
@@ -198,7 +235,8 @@ levels_iso2 <- c(
     "AU", "KP", "TW", "CV"
   )
 
-#'@export
+#' @rdname mapping_locations
+#' @export
 mapping_total <- c(
     "KP"="KP", "TW"="TW", "CV"="CV", "HN"="HN",
     "AL" = "AL", "AM" = "AM", "AT" = "AT", "BA" = "BA", "BE" = "BE",
@@ -256,17 +294,32 @@ mapping_total <- c(
     "EL" = "GR", "KO" = "XK","XKX" = "XK"
   )
 
-#'@export
+#' Company size mappings
+#'
+#' Normalised size buckets for companies.
+#'
+#' @format Named character vector (`size_mapping`) and character vector of size
+#' labels (`size_levels`).
+#' @rdname mapping_company_size
+#' @export
 size_mapping <- c(
-    'S'= 'Small',
-    'M'= 'Medium',
-    'L'= 'Large'
+  'S'= 'Small',
+  'M'= 'Medium',
+  'L'= 'Large'
 )
 
-#'@export
+#' @rdname mapping_company_size
+#' @export
 size_levels <- c('Small', 'Medium', 'Large')
 
-#'@export
+#' Experience level mappings
+#'
+#' Normalised experience levels used in salary datasets.
+#'
+#' @format Named character vector (`experience_mapping`) and ordered levels
+#' (`experience_labels_ordered`).
+#' @rdname mapping_experience
+#' @export
 experience_mapping <- c(
   "EN" = "Entry-level",
   "MI" = "Mid-level",
@@ -274,11 +327,23 @@ experience_mapping <- c(
   "EX" = "Executive-level"
 )
 
-#'@export
+#' @rdname mapping_experience
+#' @export
 experience_labels_ordered <- c("Entry-level", "Mid-level", "Senior-level", "Executive-level")
 
 
-#'@export
+#' Currency mappings and FX table
+#'
+#' Reference currency codes and yearly exchange rates to USD.
+#'
+#' @format
+#' \itemize{
+#'   \item `currencies_levels`: vector of supported currency codes.
+#'   \item `exchange_rates_to_usd`: data frame with `year`, `currency` and `rate`
+#'     columns used by `convert_currency_to_usd()`.
+#' }
+#' @rdname mapping_currency
+#' @export
 currencies_levels <- c(
   "AUD", "BRL", "CAD", "CHF", "CLP", "CZK", "DKK", "EUR",
   "GBP", "HKD", "HUF", "ILS", "INR", "JPY", "MXN", "NOK",
@@ -288,7 +353,8 @@ currencies_levels <- c(
   "ZAR"
 )
 
-#'@export
+#' @rdname mapping_currency
+#' @export
 exchange_rates_to_usd <- data.frame(
   year = rep(2020:2023, each = 41),
   currency = rep(currencies_levels, times = 4),
