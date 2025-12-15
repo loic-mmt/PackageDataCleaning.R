@@ -1,4 +1,5 @@
-url: https://loic-mmt.github.io/DataCleanR/dev/
+url: https://loic-mmt.github.io/PackageDataCleaning.R/
+destination: ../../docs
 
 template:
   bootstrap: 5

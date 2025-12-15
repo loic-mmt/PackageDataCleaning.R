@@ -1,0 +1,8 @@
+pandoc: 3.8.2.1
+pkgdown: 2.1.3
+pkgdown_sha: ~
+articles: {}
+last_built: 2025-12-15T19:02Z
+urls:
+  reference: https://loic-mmt.github.io/PackageDataCleaning.R/reference
+  article: https://loic-mmt.github.io/PackageDataCleaning.R/articles

@@ -11,8 +11,7 @@ Description: Helpers and orchestrated pipelines to validate schemas, standardise
     winsorise salary outliers, normalise categorical values, convert currencies
     to USD, and export cleaned salary data with optional reports.
 License: MIT + file LICENSE
-URL: https://loic-mmt.github.io/DataCleanR/, https://github.com/loic-mmt/DataCleanR
-BugReports: https://github.com/loic-mmt/DataCleanR/issues
+URL: https://loic-mmt.github.io/PackageDataCleaning.R/
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
