@@ -81,6 +81,10 @@
           <p><code><a href="deduplicate_rows.html">deduplicate_rows()</a></code> </p>
         </td>
         <td><p>Remove duplicate rows</p></td>
+      </tr><tr><td>
+          <p><code><a href="clean_data_pipeline.html">clean_data_pipeline()</a></code> </p>
+        </td>
+        <td><p>Complete data validation pipeline</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="na_values-r">NA_values.R <a href="#na_values-r" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p>
@@ -109,6 +113,46 @@
           <p><code><a href="finalize_salary_tbl.html">finalize_salary_tbl()</a></code> </p>
         </td>
         <td><p>Create a salary table object</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="pipeline-r">pipeline.R <a href="#pipeline-r" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="pipeline_minimal.html">pipeline_minimal()</a></code> </p>
+        </td>
+        <td><p>Minimal cleaning pipeline (validate, standardise, type columns)</p></td>
+      </tr><tr><td>
+          <p><code><a href="pipeline_light_clean.html">pipeline_light_clean()</a></code> </p>
+        </td>
+        <td><p>Minimal pipeline plus deduplication and soft imputation</p></td>
+      </tr><tr><td>
+          <p><code><a href="pipeline_strict_clean.html">pipeline_strict_clean()</a></code> </p>
+        </td>
+        <td><p>Strict cleaning with winsorisation, deduplication and imputation</p></td>
+      </tr><tr><td>
+          <p><code><a href="pipeline_ml_ready.html">pipeline_ml_ready()</a></code> </p>
+        </td>
+        <td><p>Strict pipeline plus normalisations and optional currency conversion</p></td>
+      </tr><tr><td>
+          <p><code><a href="pipeline_currency_focus.html">pipeline_currency_focus()</a></code> </p>
+        </td>
+        <td><p>Minimal cleaning pipeline focused on USD conversion</p></td>
+      </tr><tr><td>
+          <p><code><a href="pipeline_no_impute.html">pipeline_no_impute()</a></code> </p>
+        </td>
+        <td><p>Minimal pipeline and deduplication without imputation</p></td>
+      </tr><tr><td>
+          <p><code><a href="pipeline_legacy_clean.html">pipeline_legacy_clean()</a></code> </p>
+        </td>
+        <td><p>Backward-compatible wrapper around clean_data_pipeline()</p></td>
+      </tr><tr><td>
+          <p><code><a href="pipeline.html">pipeline()</a></code> </p>
+        </td>
+        <td><p>Generic entry point to run a selected cleaning pipeline</p></td>
+      </tr><tr><td>
+          <p><code><a href="export_pipeline.html">export_pipeline()</a></code> </p>
+        </td>
+        <td><p>Run a pipeline then export the cleaned data (and report)</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="normalisation-r">normalisation.R <a href="#normalisation-r" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p>
