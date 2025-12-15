@@ -7,49 +7,54 @@
 enforce_types(data, num_threshold = 0.9, max_factor_levels = 20)
 }
 \arguments{
-\item{data}{Le \code{data.frame} en entrée.}
+\item{data}{The input \code{data.frame}.}
 
-\item{num_threshold}{Proportion (0 à 1). Seuil de valeurs valides nécessaires pour convertir en numérique (défaut 0.9).}
+\item{num_threshold}{Proportion (0 to 1). Minimum proportion of valid numeric
+values required to convert to numeric (default 0.9).}
 
-\item{max_factor_levels}{Entier. Nombre maximum de modalités pour convertir en facteur (défaut 20).}
+\item{max_factor_levels}{Integer. Maximum number of unique values to allow
+conversion to a factor (default 20).}
 }
 \value{
-Un nouveau \code{data.frame} avec les types optimisés.
+A new \code{data.frame} with optimised column types.
 }
 \description{
-Analyse chaque colonne d'un \code{data.frame} et tente de convertir les types \code{character}
-en types plus appropriés (\code{numeric}, \code{integer} ou \code{factor}).
+Analyse each column of a \code{data.frame} and try to convert \code{character} columns
+to more appropriate types (\code{numeric}, \code{integer} or \code{factor}).
 }
 \details{
-L'algorithme procède colonne par colonne :
+The algorithm processes the data column by column:
 \itemize{
-\item Ignore les colonnes déjà numériques ou dates.
-\item Nettoie les espaces (\code{trimws}).
-\item \strong{Conversion Numérique} : Si le ratio de valeurs convertibles dépasse \code{num_threshold}, la colonne devient numérique (ou entier si possible).
-\item \strong{Conversion Facteur} : Sinon, si le nombre de valeurs uniques est inférieur à \code{max_factor_levels}, la colonne devient un facteur.
-\item Sinon, la colonne reste en texte.
+\item Ignores columns that are already numeric, factors or dates.
+\item Trims surrounding whitespace with \code{trimws}.
+\item \strong{Numeric conversion}: If the proportion of values that can be converted
+to numeric exceeds \code{num_threshold}, the column is converted to numeric
+(or integer when possible).
+\item \strong{Factor conversion}: Otherwise, if the number of unique values is less
+than or equal to \code{max_factor_levels}, the column is converted to a factor.
+\item Otherwise, the column remains as character.
 }
 }
 \examples{
 df <- data.frame(
-  id = c("1", "2", "3"),              # Devrait devenir integer
-  cat = c("A", "A", "B"),             # Devrait devenir factor
-  text = c("Unique1", "Unique2", "Unique3"), # Reste character
+  id = c("1", "2", "3"),              # Should become integer
+  cat = c("A", "A", "B"),             # Should become factor
+  text = c("Unique1", "Unique2", "Unique3"), # Remains character
   stringsAsFactors = FALSE
 )
 
-str(df) # Tout est character au début
+str(df) # All columns are character initially
 
 df_typed <- enforce_types(df, max_factor_levels = 2)
-str(df_typed) # Types corrigés
+str(df_typed) # Types corrected
 }
 \seealso{
 \code{\link{standardize_colnames}}
 
-Other Fonctions Validation: 
+Other Validation functions: 
 \code{\link{deduplicate_rows}()},
 \code{\link{read_raw_csv}()},
 \code{\link{standardize_colnames}()},
 \code{\link{validate_schema}()}
 }
-\concept{Fonctions Validation}
+\concept{Validation functions}

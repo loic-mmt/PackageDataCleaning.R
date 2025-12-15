@@ -2,52 +2,55 @@
 % Please edit documentation in R/validation.R
 \name{validate_schema}
 \alias{validate_schema}
-\title{Valider la présence des colonnes requises}
+\title{Validate presence of required columns}
 \usage{
 validate_schema(dataframe, required_columns, boolean_form = FALSE)
 }
 \arguments{
-\item{dataframe}{Le \code{data.frame} à tester.}
+\item{dataframe}{The \code{data.frame} to check.}
 
-\item{required_columns}{Un vecteur contenant les noms des colonnes attendues.}
+\item{required_columns}{A character vector with the names of the required columns.}
 
-\item{boollean_form}{Logique (\code{TRUE}/\code{FALSE}). Si \code{TRUE}, renvoie un booléen simple. Si \code{FALSE}, renvoie un message détaillé.}
+\item{boolean_form}{Logical (\code{TRUE}/\code{FALSE}). If \code{TRUE}, returns a simple boolean.
+If \code{FALSE}, returns a detailed message.}
 }
 \value{
 \itemize{
-\item Si \code{boollean_form = TRUE} : Un booléen.
-\item Si \code{boollean_form = FALSE} : Une chaîne de caractères (message de succès ou d'erreur).
+\item If \code{boolean_form = TRUE}: A boolean.
+\item If \code{boolean_form = FALSE}: A character string (success or error message).
 }
 }
 \description{
-Vérifie si un \code{data.frame} contient bien toutes les colonnes nécessaires à la suite du traitement.
+Check whether a \code{data.frame} contains all the columns required for
+subsequent processing.
 }
 \details{
-Cette fonction permet deux modes de retour via l'argument \code{boolean_form} :
+The function supports two output modes via the \code{boolean_form} argument:
 \itemize{
-\item \strong{Mode booléen} : Renvoie \code{TRUE} ou \code{FALSE}. Utile pour les conditions \code{if}.
-\item \strong{Mode verbeux} (par défaut) : Renvoie un message textuel indiquant explicitement quelles colonnes sont manquantes.
+\item \strong{Boolean mode}: Returns \code{TRUE} or \code{FALSE}. Useful inside \code{if} conditions.
+\item \strong{Verbose mode} (default): Returns a text message explicitly listing
+missing columns, or confirming that all required columns are present.
 }
 }
 \examples{
 df <- data.frame(id = 1:3, salary = c(100, 200, 300))
 
-# Cas Succès (Message)
+# Success case (message)
 validate_schema(df, c("id", "salary"))
 
-# Cas Échec (Message)
+# Failure case (message)
 validate_schema(df, c("id", "salary", "age"))
 
-# Cas Succès (Booléen)
-if(validate_schema(df, c("id"), boolean_form = TRUE)) {
-  print("Tout est OK !")
+# Success case (boolean)
+if (validate_schema(df, c("id"), boolean_form = TRUE)) {
+  print("All required columns are present.")
 }
 }
 \seealso{
-Other Fonctions Validation: 
+Other Validation functions: 
 \code{\link{deduplicate_rows}()},
 \code{\link{enforce_types}()},
 \code{\link{read_raw_csv}()},
 \code{\link{standardize_colnames}()}
 }
-\concept{Fonctions Validation}
+\concept{Validation functions}

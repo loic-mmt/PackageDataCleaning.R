@@ -40,6 +40,7 @@
 #' normalize_factor(raw_data, map_countries, valid_levels)
 #' @export
 normalize_factor <- function(vector, mapping, levels_in_factor, ordered_factor = FALSE) {
+  vector <- as.character(vector)
   normalized <- mapping[vector]
   normalized[is.na(normalized)] <- "Unknown"
   normalized <- factor(normalized, levels = levels_in_factor, ordered = ordered_factor)
@@ -157,4 +158,3 @@ normalize_all <- function(data) {
   data$experience_level <- normalize_factor(data$experience_level, experience_mapping, experience_labels_ordered, TRUE)
   return(data)
 }
-

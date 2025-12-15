@@ -2,40 +2,40 @@
 % Please edit documentation in R/normalisation.R
 \name{normalize_all}
 \alias{normalize_all}
-\title{Normalize everything of an salary_tbl}
+\title{Normalise all columns of a salary table}
 \usage{
 normalize_all(data)
 }
 \arguments{
-\item{data}{Le data.frame (\code{salary_tbl}) à normaliser.}
+\item{data}{The data.frame (\code{salary_tbl}) to normalise.}
 }
 \value{
-Le \code{data.frame} entièrement normalisé prêt pour l'analyse.
+The fully normalised \code{data.frame}, ready for analysis.
 }
 \description{
-Fonction "wrapper" (orchestrateur) qui applique séquentiellement toutes les règles de normalisation
-spécifiques au jeu de données des salaires (\code{salary_tbl}).
+Wrapper (orchestrator) function that sequentially applies all normalisation rules
+specific to the salary dataset (\code{salary_tbl}).
 }
 \details{
-Cette fonction transforme les colonnes suivantes :
+This function transforms the following columns:
 \itemize{
-\item \strong{Localisation} (\code{company_location}, \code{employee_residence}) : Normalisation ISO2 et création de groupements régionaux.
-\item \strong{Poste} (\code{job_title}) : Standardisation des intitulés.
-\item \strong{Télétravail} (\code{remote_ratio}) : Nettoyage numérique.
-\item \strong{Taille} (\code{company_size}) : Conversion en facteur ordonné.
-\item \strong{Type d'emploi} (\code{employment_type}) : Standardisation.
-\item \strong{Expérience} (\code{experience_level}) : Conversion en facteur ordonné.
+\item \strong{Location} (\code{company_location}, \code{employee_residence}): ISO2 normalisation and creation of regional groupings.
+\item \strong{Job title} (\code{job_title}): Standardisation of job titles.
+\item \strong{Remote work} (\code{remote_ratio}): Numeric cleaning of the remote work ratio.
+\item \strong{Company size} (\code{company_size}): Conversion to an ordered factor.
+\item \strong{Employment type} (\code{employment_type}): Standardisation.
+\item \strong{Experience} (\code{experience_level}): Conversion to an ordered factor.
 }
 }
 \note{
-Cette fonction dépend de variables globales de mapping (ex: \code{mapping_total}, \code{levels_iso2}, \code{size_mapping}, etc.)
-qui doivent être chargées dans l'environnement avant exécution.
+This function depends on global mapping variables (e.g. \code{mapping_total}, \code{levels_iso2},
+\code{size_mapping}, etc.) that must be loaded in the environment before execution.
 }
 \examples{
 \dontrun{
-# Cet exemple ne tourne pas automatiquement car il nécessite
-# que les objets de mapping (mapping_total, levels_iso2, etc.)
-# soient présents dans l'environnement global.
+# This example does not run automatically because it requires
+# the mapping objects (mapping_total, levels_iso2, etc.)
+# to be present in the global environment.
 
 df_clean <- normalize_all(salary_tbl_raw)
 }
@@ -43,8 +43,8 @@ df_clean <- normalize_all(salary_tbl_raw)
 \seealso{
 \code{\link{normalize_factor}}, \code{\link{normalize_remote_ratio}}
 
-Other Fonctions de Normalisation: 
+Other Normalization functions: 
 \code{\link{normalize_factor}()},
 \code{\link{normalize_remote_ratio}()}
 }
-\concept{Fonctions de Normalisation}
+\concept{Normalization functions}

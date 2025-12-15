@@ -2,7 +2,7 @@
 % Please edit documentation in R/export.R
 \name{export_csv}
 \alias{export_csv}
-\title{Exporter les données en CSV}
+\title{Export data to CSV}
 \usage{
 export_csv(
   data,
@@ -15,64 +15,75 @@ export_csv(
 )
 }
 \arguments{
-\item{data}{Le \code{data.frame} à exporter.}
+\item{data}{The \code{data.frame} to export.}
 
-\item{path}{Chemin du dossier de destination (défaut \code{"exports"}). Le dossier sera créé s'il n'existe pas.}
+\item{path}{Destination folder path (default \code{"exports"}). The folder will be
+created if it does not exist.}
 
-\item{filename}{Nom du fichier. L'extension \code{.csv} est ajoutée automatiquement si nécessaire (défaut \code{"cleaned_data"}).}
+\item{filename}{File name. The \code{.csv} extension is added automatically if
+necessary (default \code{"cleaned_data"}).}
 
-\item{sep}{Caractère séparateur de colonnes (défaut \code{";"}).}
+\item{sep}{Column separator character (default \code{";"}).}
 
-\item{row.names}{Logique. Faut-il inclure les noms de lignes dans le fichier ? (défaut \code{FALSE}).}
+\item{row.names}{Logical. Should row names be included in the file?
+(default \code{FALSE}).}
 
-\item{overwrite}{Logique. Si \code{FALSE}, lève une erreur si le fichier existe déjà. Si \code{TRUE} (défaut), l'écrase.}
+\item{overwrite}{Logical. If \code{FALSE}, an error is thrown if the file already
+exists. If \code{TRUE} (default), it is overwritten.}
 
-\item{verbose}{Logique. Affiche un message avec le chemin complet du fichier après écriture (défaut \code{TRUE}).}
+\item{verbose}{Logical. If \code{TRUE} (default), prints a message with the full
+path of the written file.}
 }
 \value{
-Renvoie de manière invisible (\code{invisible()}) le chemin complet du fichier créé.
+(Invisibly) returns the full path to the created file.
 }
 \description{
-Sauvegarde un \code{data.frame} dans un fichier CSV sur le disque.
-Cette fonction gère automatiquement la création du dossier cible, l'ajout de l'extension \code{.csv} et le choix du séparateur.
+Save a \code{data.frame} to a CSV file on disk.
+This function automatically handles creation of the target directory, appends
+the \code{.csv} extension if needed, and chooses an appropriate writer based on
+the column separator.
 }
 \details{
-La fonction simplifie l'exportation en effectuant les étapes suivantes :
+The function simplifies CSV export by performing the following steps:
 \enumerate{
-\item Vérifie que l'objet \code{data} est bien un data.frame.
-\item Crée le dossier \code{path} récursivement s'il n'existe pas encore.
-\item Ajoute l'extension \code{.csv} au nom du fichier si elle est absente.
-\item Choisit la fonction d'écriture optimisée selon le séparateur :
+\item Check that the \code{data} object is a data.frame.
+\item Create the \code{path} directory recursively if it does not already exist.
+\item Append the \code{.csv} extension to the file name if it is missing.
+\item Choose an optimised writing function based on the separator:
 \itemize{
-\item Pour \code{sep = ";"} : utilise \code{utils::write.csv2} (format européen).
-\item Pour \code{sep = ","} : utilise \code{utils::write.csv} (format US).
-\item Autres : utilise \code{utils::write.table}.
+\item For \code{sep = ";"}: use \code{utils::write.csv2} (European-style format).
+\item For \code{sep = ","}: use \code{utils::write.csv} (US-style format).
+\item Otherwise: use \code{utils::write.table}.
 }
 }
 }
 \examples{
-# Données de test
+# Test data
 df_test <- data.frame(
   id = 1:3,
-  nom = c("Alice", "Bob", "Charlie"),
+  name = c("Alice", "Bob", "Charlie"),
   score = c(10.5, 15.2, 8.0)
 )
 
-# Création d'un dossier temporaire pour ne pas polluer votre disque
-tmp_folder <- tempfile() # On utilise un nom aléatoire
+# Create a temporary folder to avoid writing on your disk
+tmp_folder <- tempfile() # Use a random folder name
 
-# 1. Export simple (point-virgule par défaut)
+# 1. Simple export (semicolon separator by default)
 path_file <- export_csv(df_test, path = tmp_folder, filename = "test_export")
 
-# Vérification que le fichier existe
+# Check that the file exists
 file.exists(path_file)
 
-# 2. Export avec virgule et sans écraser (devrait générer une erreur si on relance)
+# 2. Export with comma separator and no overwrite (should error if rerun)
 try({
   export_csv(df_test, path = tmp_folder, filename = "test_export", sep = ",", overwrite = FALSE)
 })
 
-# Nettoyage du dossier temporaire
+# Clean up temporary folder
 unlink(tmp_folder, recursive = TRUE)
 }
-\concept{Fonctions d'Export}
+\seealso{
+Other Export functions: 
+\code{\link{write_cleaning_report}()}
+}
+\concept{Export functions}

@@ -7,26 +7,29 @@
 deduplicate_rows(data, keys = NULL, keep = c("first", "last"))
 }
 \arguments{
-\item{data}{Le \code{data.frame} à dédupliquer.}
+\item{data}{The \code{data.frame} to deduplicate.}
 
-\item{keys}{Vecteur de noms de colonnes ou \code{NULL}.
+\item{keys}{Character vector of column names or \code{NULL}.
 \itemize{
-\item Si \code{NULL} (défaut) : Toutes les colonnes sont utilisées pour identifier les doublons.
-\item Si Vecteur : Seules ces colonnes définissent l'unicité (ex: \code{c("ID", "Date")}).
+\item If \code{NULL} (default): All columns are used to identify duplicates.
+\item If a vector: Only these columns define uniqueness (e.g. \code{c("ID", "Date")}).
 }}
 
-\item{keep}{Chaîne de caractères indiquant quelle ligne garder en cas de doublon :
+\item{keep}{Character string indicating which row to keep when duplicates are
+found:
 \itemize{
-\item \code{"first"} : Garde la première occurrence trouvée.
-\item \code{"last"} : Garde la dernière occurrence trouvée.
+\item \code{"first"}: Keep the first occurrence.
+\item \code{"last"}: Keep the last occurrence.
 }}
 }
 \value{
-Le \code{data.frame} sans doublons.
-L'objet retourné possède un attribut \code{"n_removed"} indiquant le nombre de lignes supprimées.
+The deduplicated \code{data.frame}.
+The returned object has an attribute \code{"n_removed"} indicating the number of
+rows removed.
 }
 \description{
-Supprime les doublons dans un \code{data.frame} en se basant sur une clé composée de colonnes spécifiques.
+Remove duplicate rows from a \code{data.frame} based on a key composed of one or
+several columns.
 }
 \examples{
 df <- data.frame(
@@ -34,18 +37,18 @@ df <- data.frame(
   val = c("a", "a", "b", "c")
 )
 
-# Supprime le doublon exact (ligne 2)
+# Remove the exact duplicate (row 2)
 deduplicate_rows(df)
 
-# Déduplication basée uniquement sur l'ID (garde la dernière occurrence)
+# Deduplicate using only the ID (keep the last occurrence)
 df2 <- data.frame(id = c(1, 1), val = c("a", "b"))
 deduplicate_rows(df2, keys = "id", keep = "last")
 }
 \seealso{
-Other Fonctions Validation: 
+Other Validation functions: 
 \code{\link{enforce_types}()},
 \code{\link{read_raw_csv}()},
 \code{\link{standardize_colnames}()},
 \code{\link{validate_schema}()}
 }
-\concept{Fonctions Validation}
+\concept{Validation functions}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/data_quality.R
 \name{validate_ranges}
 \alias{validate_ranges}
-\title{Valider les plages de valeurs}
+\title{Validate value ranges}
 \usage{
 validate_ranges(
   data,
@@ -11,45 +11,45 @@ validate_ranges(
 )
 }
 \arguments{
-\item{data}{Le \code{data.frame} contenant les colonnes \code{salary}, \code{remote_ratio} et \code{work_year}.}
+\item{data}{A \code{data.frame} containing the \code{salary}, \code{remote_ratio} and \code{work_year} columns.}
 
-\item{min_year}{Entier. Année minimale acceptable (défaut 2000).}
+\item{min_year}{Integer. Minimum acceptable year (default 2000).}
 
-\item{max_year}{Entier. Année maximale acceptable (défaut : année courante système).}
+\item{max_year}{Integer. Maximum acceptable year (default: current system year).}
 }
 \value{
-Un \code{data.frame} filtré (le nombre de lignes peut être inférieur à l'original).
+A filtered \code{data.frame} (the number of rows may be lower than the original).
 }
 \description{
-Vérifie que les données respectent les règles métier et \strong{supprime} les lignes invalides.
-Les règles incluent : salaire strictement positif, ratio de télétravail entre 0 et 100, et année de travail plausible.
+Check that the data respect basic business rules and \strong{remove} invalid rows.
+The rules include: strictly positive salary, remote work ratio between 0 and 100, and a plausible work year.
 }
 \details{
-Cette fonction applique un filtre strict. Une ligne est conservée uniquement si toutes les conditions suivantes sont vraies :
+This function applies a strict filter. A row is kept only if all of the following conditions are TRUE:
 \itemize{
 \item \code{salary} > 0
-\item \code{remote_ratio} est compris entre 0 et 100 inclus.
-\item \code{work_year} est compris entre \code{min_year} et \code{max_year}.
-\item Aucune de ces valeurs n'est \code{NA}.
+\item \code{remote_ratio} is between 0 and 100 inclusive
+\item \code{work_year} is between \code{min_year} and \code{max_year}
+\item none of these values is \code{NA}
 }
-Un message est affiché dans la console si des lignes sont supprimées.
+A message is printed to the console if some rows are removed.
 }
 \examples{
-# Données avec une ligne invalide (salary négatif et remote_ratio > 100)
+# Data with an invalid row (negative salary and remote_ratio > 100)
 df <- data.frame(
   salary = c(50000, -100, 60000),
   remote_ratio = c(50, 150, 100),
   work_year = c(2022, 2022, 2023)
 )
 
-# Application du filtre
+# Apply the filter
 df_clean <- validate_ranges(df)
 
-# Résultat : ne garde que les lignes valides
-nrow(df_clean) # Devrait être 2
+# Result: only valid rows are kept
+nrow(df_clean) # Should be 2
 }
 \seealso{
-Other Qualité des Données: 
+Other Data quality: 
 \code{\link{cap_outliers_salary}()}
 }
-\concept{Qualité des Données}
+\concept{Data quality}

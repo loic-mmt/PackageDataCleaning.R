@@ -16,45 +16,47 @@ impute_missing(
 )
 }
 \arguments{
-\item{data}{Le \code{data.frame} contenant des valeurs manquantes.}
+\item{data}{The \code{data.frame} containing missing values.}
 
-\item{cols}{Vecteur de noms de colonnes à traiter (optionnel). Si \code{NULL} (défaut), toutes les colonnes sont traitées.}
+\item{cols}{Optional character vector of column names to process. If \code{NULL}
+(default), all columns are processed.}
 
-\item{exclude}{Vecteur de noms de colonnes à exclure du traitement (optionnel).}
+\item{exclude}{Optional character vector of column names to exclude from processing.}
 
-\item{num_method}{Méthode pour les numériques : \code{"median"}, \code{"mean"} ou \code{"constant"}.}
+\item{num_method}{Method for numeric columns: \code{"median"}, \code{"mean"} or \code{"constant"}.}
 
-\item{cat_method}{Méthode pour les textes/facteurs : \code{"mode"}, \code{"constant"} ou \code{"new_level"}.}
+\item{cat_method}{Method for character/factor columns: \code{"mode"}, \code{"constant"} or \code{"new_level"}.}
 
-\item{num_constant}{Valeur utilisée si \code{num_method = "constant"} (défaut \code{0}).}
+\item{num_constant}{Value used if \code{num_method = "constant"} (default \code{0}).}
 
-\item{cat_constant}{Valeur utilisée si \code{cat_method = "constant"} (défaut \code{"Missing"}).}
+\item{cat_constant}{Value used if \code{cat_method = "constant"} (default \code{"Missing"}).}
 
-\item{verbose}{Logique. Si \code{TRUE} (défaut), affiche un message dans la console pour chaque colonne imputée.}
+\item{verbose}{Logical. If \code{TRUE} (default), prints a message in the console
+for each imputed column.}
 }
 \value{
-Le \code{data.frame} avec les valeurs manquantes imputées.
+The \code{data.frame} with missing values imputed.
 }
 \description{
-Remplace les valeurs manquantes (\code{NA}) dans un \code{data.frame} colonne par colonne,
-en appliquant des stratégies simples et indépendantes (sans dépendances externes complexes).
+Impute missing values (\code{NA}) in a \code{data.frame} column by column,
+using simple, independent strategies (no complex external dependencies).
 }
 \details{
-Les stratégies appliquées dépendent du type de la colonne :
+The strategy applied depends on the column type:
 \itemize{
-\item \strong{Numérique} (\code{numeric}, \code{integer}) :
+\item \strong{Numeric} (\code{numeric}, \code{integer}):
 \itemize{
-\item \code{"median"} (défaut) : Remplace par la médiane (robuste aux outliers).
-\item \code{"mean"} : Remplace par la moyenne.
-\item \code{"constant"} : Remplace par la valeur fournie dans \code{num_constant} (ex: 0).
+\item \code{"median"} (default): Replace by the median (robust to outliers).
+\item \code{"mean"}: Replace by the mean.
+\item \code{"constant"}: Replace by the value supplied in \code{num_constant} (e.g. 0).
 }
-\item \strong{Catégorielle} (\code{character}, \code{factor}) :
+\item \strong{Categorical} (\code{character}, \code{factor}):
 \itemize{
-\item \code{"mode"} (défaut) : Remplace par la valeur la plus fréquente. En cas d'égalité, l'ordre alphabétique tranche.
-\item \code{"constant"} ou \code{"new_level"} : Remplace par la valeur \code{cat_constant} (par défaut "Missing").
-\item \emph{Note} : Si la colonne est un facteur, les niveaux (levels) sont automatiquement mis à jour pour inclure la nouvelle valeur si nécessaire.
+\item \code{"mode"} (default): Replace by the most frequent value. In case of ties, alphabetical order is used.
+\item \code{"constant"} or \code{"new_level"}: Replace by the value \code{cat_constant} (default \code{"Missing"}).
+\item \emph{Note}: If the column is a factor, the levels are automatically updated to include the new value if needed.
 }
-\item \strong{Logique} (\code{logical}) : Remplace par la valeur majoritaire (\code{TRUE} ou \code{FALSE}).
+\item \strong{Logical} (\code{logical}): Replace by the majority value (\code{TRUE} or \code{FALSE}).
 }
 }
 \examples{
@@ -64,10 +66,10 @@ df <- data.frame(
   stringsAsFactors = TRUE
 )
 
-# Imputation : médiane pour les nombres, mode pour les facteurs
+# Imputation: median for numeric columns, mode for factors
 df_imp <- impute_missing(df)
 
-# Vérification
+# Check result
 print(df_imp)
 }
-\concept{Gestion des NA}
+\concept{Missing values handling}

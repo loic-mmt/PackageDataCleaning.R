@@ -15,45 +15,48 @@ cap_outliers_salary(
 )
 }
 \arguments{
-\item{data}{Le \code{data.frame} contenant les données.}
+\item{data}{A \code{data.frame} containing the data.}
 
-\item{col}{Chaîne de caractères. Nom de la colonne à traiter (défaut "salary_in_usd").}
+\item{col}{Character string. Name of the column to process (default "salary_in_usd").}
 
-\item{lower}{Probabilité pour le quantile bas (0 à 1, défaut 0.01).}
+\item{lower}{Probability for the lower quantile (between 0 and 1, default 0.01).}
 
-\item{upper}{Probabilité pour le quantile haut (0 à 1, défaut 0.99).}
+\item{upper}{Probability for the upper quantile (between 0 and 1, default 0.99).}
 
-\item{clip_side}{Stratégie de plafonnement : "both" (défaut), "upper" ou "lower".}
+\item{clip_side}{Capping strategy: "both" (default), "upper" or "lower".}
 
-\item{na_rm}{Logique. Ignorer les \code{NA} lors du calcul des quantiles (défaut TRUE).}
+\item{na_rm}{Logical. Should \code{NA} values be ignored when computing quantiles? (default TRUE)}
 
-\item{verbose}{Logique. Affiche un résumé des remplacements effectués.}
+\item{verbose}{Logical. If TRUE, prints a summary of the replacements performed.}
 }
 \value{
-Le \code{data.frame} avec la colonne cible modifiée (les valeurs extrêmes sont "écrasées").
+The \code{data.frame} with the target column modified (extreme values are
+replaced by the corresponding quantile bounds).
 }
 \description{
-Traite les valeurs extrêmes (outliers) d'une colonne numérique en les remplaçant par les valeurs des quantiles limites.
-C'est une technique de "Winsorisation".
+Handle extreme values (outliers) in a numeric column by replacing them with
+specified quantile cut-offs. This is a simple "winsorisation" strategy.
 }
 \details{
-La fonction calcule deux bornes, L (Lower) et U (Upper), correspondant aux probabilités demandées.
-Les valeurs inférieures à L sont remplacées par L, et les valeurs supérieures à U sont remplacées par U.
+The function computes two bounds, L (lower) and U (upper), corresponding to the
+requested quantile probabilities. Values below L are replaced by L, and values
+above U are replaced by U. You can choose whether to cap both tails, only the
+upper tail, or only the lower tail.
 }
 \examples{
-# Jeu de données avec un salaire extrême (1 million)
+# Simple data with an extreme salary value (1 million)
 df <- data.frame(
   salary_in_usd = c(50000, 55000, 60000, 45000, 1000000)
 )
 
-# On plafonne les 10\% supérieurs (Winsorisation)
+# Cap the upper 10\% (winsorisation)
 df_capped <- cap_outliers_salary(df, lower = 0.1, upper = 0.9, clip_side = "upper")
 
-# La valeur 1,000,000 a été remplacée par le 90ème percentile
+# The value 1,000,000 is replaced by the 90th percentile
 print(df_capped)
 }
 \seealso{
-Other Qualité des Données: 
+Other Data quality: 
 \code{\link{validate_ranges}()}
 }
-\concept{Qualité des Données}
+\concept{Data quality}
