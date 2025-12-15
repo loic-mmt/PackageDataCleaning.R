@@ -57,8 +57,5 @@ Fonctionnalités clés
 Documentation
 -------------
 
-Le site pkgdown est généré dans `packages/DataCleanR/docs/` et peut être publié
-via GitHub Pages. Résumé des liens :
-
 - Référence : `packages/DataCleanR/docs/reference/index.html`
 - Accueil : `packages/DataCleanR/docs/index.html`
