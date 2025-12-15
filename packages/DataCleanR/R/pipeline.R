@@ -30,7 +30,7 @@
 }
 
 
-# Pipeline modes --------------------------------------------------------
+# Pipeline modes
 
 #' Minimal cleaning pipeline
 #'
